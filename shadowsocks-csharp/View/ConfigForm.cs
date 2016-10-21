@@ -319,6 +319,8 @@ namespace Shadowsocks.View
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ShadowFogPassword.Text, ShadowFogRememberUserCheck.Checked); }
             else
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
+
+            controller.RecoverSSConfig();// closing form will trigger the configBackup overwrite config and save, so for OK button need to update configBackup first
 /********************************************************<end>add by Ian.May Oct.16***********************************************************************/
         }
 

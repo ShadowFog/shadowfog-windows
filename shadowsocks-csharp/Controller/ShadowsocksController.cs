@@ -202,7 +202,8 @@ namespace Shadowsocks.Controller
             _config.localPort = localPort;
             Configuration.Save(_config);
 /**********************************<Start> Added by Ian.May Oct. 19***************************************************/
-            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs 
+            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs  first
+                             // In this case,even the configForm closed call RecoverSS() ,configBackUP is updated here
 /**********************************<End> Added by Ian.May Oct. 19****************************************************/
         }
 

@@ -23,6 +23,22 @@ namespace Shadowsocks
         [STAThread]
         static void Main()
         {
+            /*******************************************************************/
+            // For auto updater
+            /*******************************************************************/
+            if (File.Exists(Application.StartupPath + @"\ShadowFog.exe.old"))
+            {
+                try
+                {
+                    File.Delete(Application.StartupPath + @"\ShadowFog.exe.old");
+                }
+                catch(Exception AcessErr)
+                { } //skip it, for next time starting, delete it again;
+            }
+            /*******************************************************************/
+            // For auto updater
+            /*******************************************************************/
+
             // Check OS since we are using dual-mode socket
             if (!Utils.IsWinVistaOrHigher())
             {
