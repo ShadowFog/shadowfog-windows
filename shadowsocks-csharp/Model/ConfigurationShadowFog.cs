@@ -6,6 +6,7 @@ using System.Text;
 using System.Net;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 using Shadowsocks.Controller;
 
@@ -26,11 +27,17 @@ namespace Shadowsocks.Model
 
         public static string GetFogNodeList(ClientUser User)
         {
-            string temp = GetFogScheduler();
+            string tempBase64 = GetFogScheduler();
+            byte[] tempBytes = Convert.FromBase64String(tempBase64);
+            string temp = Encoding.UTF8.GetString(tempBytes);
+            Console.WriteLine("SchedulerInfo: " + temp);
+
+            JObject schedulerInfo = JObject.Parse(temp);
+            string schedulerAddr = (string)schedulerInfo["scheduler_addr"];
             /******************************************************/
-             Console.WriteLine("Scheduler Address: " + temp);
+             Console.WriteLine("Scheduler Address: " + schedulerAddr);
             /******************************************************/
-            return GetFogCandidates(temp, User);
+            return GetFogCandidates(schedulerAddr, User);
         }
 
         public static string GetFogScheduler()
@@ -38,9 +45,9 @@ namespace Shadowsocks.Model
             string content;
             HttpWebRequest myHttpWebRequest = null;
             HttpWebResponse myHttpWebResponse = null;
-            string[] url = new string[] { "https://git.oschina.net/ShadowFogNetwork/Information/raw/master/schedulerAddressTemp.txt",
-                                          "https://raw.githubusercontent.com/ShadowFog/Information/master/schedulerAddressTemp.txt",
-                                          "https://bitbucket.org/shadowfogteam/schedulerinfomation/raw/0cec08789ccbf8e38f927e52a267bc20309f0c62/schedulerAddressTemp.txt" };
+            string[] url = new string[] { "http://git.oschina.net/ShadowFogNetwork/Information/raw/master/sf-scheduler.json",
+                                          "https://raw.githubusercontent.com/ShadowFog/Information/master/sf-scheduler.json",
+                                          "https://bitbucket.org/shadowfogteam/infomation/raw/97464b30c4c693d74ed846ceac9f887909910c2f/sf-scheduler.json" };
             for (int url_cnt = 0; url_cnt < url.Length; url_cnt++)
             {
                 if (null == myHttpWebResponse)

@@ -176,7 +176,10 @@ namespace Shadowsocks.View
             }
             else
             {
-                serverInfo = config.GetCurrentServer().FriendlyName();
+                /*****************************************************************************/
+                //serverInfo = config.GetCurrentServer().FriendlyName();
+                serverInfo = config.GetCurrentServer().FriendlyName(controller.isShadowFogMode);
+                /*****************************************************************************/
             }
 
 /******************************************************<Start> Edit by Ian.May, Oct.18**********************************************************************/
@@ -446,7 +449,10 @@ namespace Shadowsocks.View
             Configuration configuration = controller.GetConfigurationCopy();
             foreach (var server in configuration.configs)
             {
-                MenuItem item = new MenuItem(server.FriendlyName());
+                /*****************************************************************************/
+                //MenuItem item = new MenuItem(server.FriendlyName());
+                MenuItem item = new MenuItem(server.FriendlyName(controller.isShadowFogMode));
+                /*****************************************************************************/
                 item.Tag = i - strategyCount;
                 item.Click += AServerItem_Click;
                 items.Add(i, item);
@@ -586,7 +592,8 @@ namespace Shadowsocks.View
 
         private void AboutItem_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
+            //Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
+            Process.Start("https://github.com/ShadowFog/shadowfog-windows");
         }
 
         private void notifyIcon1_Click(object sender, MouseEventArgs e)

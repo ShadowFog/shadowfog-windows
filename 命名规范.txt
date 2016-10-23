@@ -1,2 +1,0 @@
-ShadowFog.exe
-ShadowFog-0.2.8.zip

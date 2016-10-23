@@ -322,7 +322,7 @@ namespace Shadowsocks.Controller
             }
             if (_config.enabled)
             {
-                SystemProxy.Update(_config, true);
+                SystemProxy.Update(_config, true); // forcedisable = true ,means force _config.enabled = false to update(close) system proxy;
             }
         }
 
