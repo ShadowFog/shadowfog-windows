@@ -46,9 +46,11 @@ namespace Shadowsocks.Controller
         private bool _systemProxyIsDirty = false;
 
 /*********************************************** <Start> add by Ian.May 2016/10/15 **************************************************/
-//_configBackup is for caching "_config", since we need _config when shadowfog is closing.We need to replace fognode server infomation
+//_configBackup is ONLY for caching "_config.configs" (the servers), since we need _config when shadowfog is closing.We need to replace fognode server infomation
 /*********************************************** <Start> add by Ian.May 2016/10/15 **************************************************/
-        private Configuration _configBackup; // writing to _configBackup should be extremly carefull, only BackUpSSconfig() can do this;
+        // writing to _configBackup should be extremely carefull, only BackUpSSconfig() can do this;
+        // _configBackup should never be saved directly, it only contains useful server backup infomation
+        private Configuration _configBackup; 
         private ClientUser _clientUser;
         public bool isShadowFogMode;
         public bool isInitialStartup;
@@ -206,7 +208,7 @@ namespace Shadowsocks.Controller
             _config.localPort = localPort;
             Configuration.Save(_config);
 /**********************************<Start> Added by Ian.May Oct. 19***************************************************/
-            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs(_config ==> _configBackup)
+            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs(_config.configs ==> _configBackup.configs)
 /**********************************<End> Added by Ian.May Oct. 19****************************************************/
         }
 
@@ -309,7 +311,7 @@ namespace Shadowsocks.Controller
 //_configBackup keeps the previous _config infomation ,and use _config for recieving fognode server infomation.
 //When exit(finish connection),we should erase the shadowfog server configs and put the orignial _config back
             RecoverSSConfig(); //_configBackup.configs ==> _config.configs, then save _config;
-            Configuration.Save(_config);
+            Configuration.Save(_config); // correct opertation because this save extra configuration other than server infomation
 /******************************************************<End> add by Ian.May 2016/10/15*******************************************************/
             if (stopped)
             {
@@ -592,7 +594,8 @@ namespace Shadowsocks.Controller
             } 
                
             Reload(); // Reload() first load the _config from local gui-config.json
-            Configuration.Save(_configBackup);// write _configBackUp to gui-config.json
+            RecoverSSConfig();// give back the previous server information, overwrite the fognode infomation
+            Configuration.Save(_config);// write _config to gui-config.json
         }
 
         public void RecordClientUser(string userName, string hashedPassword, bool isSave)
@@ -642,7 +645,7 @@ namespace Shadowsocks.Controller
             return _clientUser.pswdHashed;
         }
 
-        // pass _config.servers ==> _configBackup.servers
+        // pass _config.servers ==> _configBackup.servers, value pass only!
         public void BackUpSSConfig()
         {
             if (null != _config)
@@ -659,7 +662,7 @@ namespace Shadowsocks.Controller
                 _config.configs = _configBackup.configs;
             }
         }
-
+        // WARNING: this is only used for servers display on ConfigForm Panel
         public Configuration GetBackUpConfiguration()
         {
             return _configBackup;
