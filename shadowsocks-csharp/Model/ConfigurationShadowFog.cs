@@ -30,8 +30,6 @@ namespace Shadowsocks.Model
             string tempBase64 = GetFogScheduler();
             byte[] tempBytes = Convert.FromBase64String(tempBase64);
             string temp = Encoding.UTF8.GetString(tempBytes);
-            Console.WriteLine("SchedulerInfo: " + temp);
-
             JObject schedulerInfo = JObject.Parse(temp);
             string schedulerAddr = (string)schedulerInfo["scheduler_addr"];
             /******************************************************/
@@ -90,16 +88,12 @@ namespace Shadowsocks.Model
             
             HttpWebRequest myHttpWebRequest = null;
             HttpWebResponse myHttpWebResponse = null;
-            /***********************************************************************************************************************************************************************/
-            //myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://192.168.31.203/scheduler.php" + "?username=" + User.name + "&timestamp=" + User.timeStamp + "&nonce=" + User.nounce + "&transactionID=" + User.transactionID + "&signature=" + User.signature);
             myHttpWebRequest = (HttpWebRequest)WebRequest.Create(SchedulerURL + "?username=" + User.name + "&timestamp=" + User.timeStamp + "&nonce=" + User.nounce + "&transactionID=" + User.transactionID + "&signature=" + User.signature);
-            /***********************************************************************************************************************************************************************/
 
-            Console.WriteLine("?username=" + User.name);
-            Console.WriteLine("&timestamp=" + User.timeStamp);
-            Console.WriteLine("&nonce=" + User.nounce);
-            Console.WriteLine("&transactionID=" + User.transactionID);
-            Console.WriteLine("&signature=" + User.signature);
+            Console.WriteLine("Username=" + User.name);
+            Console.WriteLine("Nounce=" + User.nounce);
+            Console.WriteLine("TransactionID=" + User.transactionID);
+
             // handle bad http responses
             try
             {
@@ -119,6 +113,5 @@ namespace Shadowsocks.Model
             readStream.Close();
             return content;
         }
-        
     }
 }

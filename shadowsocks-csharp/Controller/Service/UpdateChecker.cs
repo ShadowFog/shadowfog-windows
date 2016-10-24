@@ -18,12 +18,11 @@ namespace Shadowsocks.Controller
 
 /*************************************************  This UpdateChecker is for shadowfog  ******************************************************/
 /**********************************  The update checker for shadowsocks is rewritten for lastest release  *************************************/
-/**********************************************************************************************************************************************/
+/************************************************************ Oct. 20th ***********************************************************************/
 
     public class UpdateChecker
     {
-        //private const string UpdateURL = "https://api.github.com/repos/shadowsocks/shadowsocks-windows/releases";
-        //use "releases/latest" instead of "releases";
+        //Use "releases/latest" instead of "releases";
         //private const string UpdateURL = "https://api.github.com/repos/shadowsocks/shadowsocks-windows/releases/latest";
         private const string UpdateURLShadowFog = "https://api.github.com/repos/ShadowFog/shadowfog-windows/releases/latest";
         private const string UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36";
@@ -37,7 +36,7 @@ namespace Shadowsocks.Controller
         public event EventHandler CheckUpdateCompleted;
 
         public const string Version = "3.3.1";
-        public const string ShadowFogVersion = "0.3.0";
+        public const string ShadowFogVersion = "0.3.1";
 
         private class CheckUpdateTimer : System.Timers.Timer
         {
@@ -70,7 +69,6 @@ namespace Shadowsocks.Controller
         public void CheckUpdate(Configuration config)
         {
             this.config = config;
-
             try
             {
                 Logging.Debug("Checking updates...");

@@ -45,13 +45,14 @@ namespace Shadowsocks.Controller
 
         private bool _systemProxyIsDirty = false;
 
-/***************************************<Start> add by Ian.May 2016/10/15******************************************/
+/*********************************************** <Start> add by Ian.May 2016/10/15 **************************************************/
 //_configBackup is for caching "_config", since we need _config when shadowfog is closing.We need to replace fognode server infomation
+/*********************************************** <Start> add by Ian.May 2016/10/15 **************************************************/
         private Configuration _configBackup; // writing to _configBackup should be extremly carefull, only BackUpSSconfig() can do this;
         private ClientUser _clientUser;
         public bool isShadowFogMode;
         public bool isInitialStartup;
-/******************************************<End> add by Ian.May 2016/10/15******************************************/
+/************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
 
         public class PathEventArgs : EventArgs
         {
@@ -96,7 +97,8 @@ namespace Shadowsocks.Controller
         public ShadowsocksController()
         {
 /***************************************************<Start> add by Ian.May 2016/10/15****************************************************/
-            // for destructing fogNodes at closing stage, should not be handed from _config;(shallow copy)
+// for destructing fogNodes at closing stage, should not be handed from _config;(shallow copy)
+/***************************************************<Start> add by Ian.May 2016/10/15****************************************************/
             _configBackup = Configuration.Load(); 
             _clientUser = ClientUser.Load();
             isShadowFogMode = true;
@@ -112,8 +114,9 @@ namespace Shadowsocks.Controller
 
         public void Start()
         {
-/*********************************************************<Start> add by Ian.May 2016/09/26**********************************************/
-            //use FogReload() to automatically selcect Fog Nodes at initial stage.
+/***************************************************** <Start> add by Ian.May 2016/09/26 **********************************************/
+//use FogReload() to automatically selcect Fog Nodes at initial stage.
+/***************************************************** <Start> add by Ian.May 2016/09/26 **********************************************/
             Configuration.Save(_config);
             Console.WriteLine("Controller Starting..._config saved to file!");
 
@@ -134,10 +137,11 @@ namespace Shadowsocks.Controller
                 }
             }
             else
+            {
+                Console.WriteLine("Normal Starting...");
 /**********************************************************<End> add by Ian.May 2016/09/26***********************************************/
-
-            Console.WriteLine("Normal Starting...");
-            Reload();
+                Reload();
+            }
         }
 
         protected void ReportError(Exception e)
@@ -202,8 +206,7 @@ namespace Shadowsocks.Controller
             _config.localPort = localPort;
             Configuration.Save(_config);
 /**********************************<Start> Added by Ian.May Oct. 19***************************************************/
-            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs  first
-                             // In this case,even the configForm closed call RecoverSS() ,configBackUP is updated here
+            BackUpSSConfig();//Manully editing servers list will be recorded in configBackup.configs(_config ==> _configBackup)
 /**********************************<End> Added by Ian.May Oct. 19****************************************************/
         }
 
@@ -306,6 +309,7 @@ namespace Shadowsocks.Controller
 //_configBackup keeps the previous _config infomation ,and use _config for recieving fognode server infomation.
 //When exit(finish connection),we should erase the shadowfog server configs and put the orignial _config back
             RecoverSSConfig(); //_configBackup.configs ==> _config.configs, then save _config;
+            Configuration.Save(_config);
 /******************************************************<End> add by Ian.May 2016/10/15*******************************************************/
             if (stopped)
             {
@@ -561,6 +565,7 @@ namespace Shadowsocks.Controller
                 // handle bad scheduler reply
                 try
                 {
+                    // a better way is to use JObject or JArray, refer to UpdateChecker.cs
                     _fogServerReply = JsonConvert.DeserializeObject<ConfigurationShadowFog>(fogNodeList);
                 }
                 catch(Exception e)
@@ -573,7 +578,7 @@ namespace Shadowsocks.Controller
                     MessageBox.Show(I18N.GetString("Error code : ") + _fogServerReply.errorcode + "\n\r" + I18N.GetString("Error msg : ") + _fogServerReply.errormsg);
                     throw new Exception("Error");
                 }
-                Console.WriteLine("transactionID=" + _fogServerReply.transactionID);
+
                 Console.WriteLine("access_token=" + _fogServerReply.access_token);
                 Console.WriteLine("expires_in=" + _fogServerReply.expires_in);
 
@@ -581,12 +586,13 @@ namespace Shadowsocks.Controller
                 if (null != _fogServerReply.configs)
                 {
                     _config.configs = _fogServerReply.configs; //value pass proved;
-                    Configuration.Save(_config);
+                    Configuration.Save(_config); //_config now is written into gui-config.json  with FogNode IP and Ports...
                     Console.WriteLine(I18N.GetString("Fog Node obtained. Please check connection!"));
                 }
             } 
                
-            Reload();
+            Reload(); // Reload() first load the _config from local gui-config.json
+            Configuration.Save(_configBackup);// write _configBackUp to gui-config.json
         }
 
         public void RecordClientUser(string userName, string hashedPassword, bool isSave)
@@ -651,8 +657,12 @@ namespace Shadowsocks.Controller
             if (null != _configBackup)
             {
                 _config.configs = _configBackup.configs;
-                Configuration.Save(_config);
             }
+        }
+
+        public Configuration GetBackUpConfiguration()
+        {
+            return _configBackup;
         }
 /******************************************************<End> add by Ian.May 2016/09/26**********************************************************/
 

@@ -85,7 +85,7 @@ namespace Shadowsocks.Model
                     if(isShadowFogMode)
                     {
                         var serverFragments = server.Split('.');
-                        serverStr = $"***.***.***.{serverFragments[serverFragments.Length-1]}:{server_port}"; // for the 4th fragment
+                        serverStr = $"*.{serverFragments[serverFragments.Length-1]}:{server_port}"; // for the 4th fragment
                     }
                     else
                     {

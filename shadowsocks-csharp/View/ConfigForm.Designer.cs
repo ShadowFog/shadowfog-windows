@@ -654,7 +654,6 @@
             this.Text = "Edit Servers";
             this.Activated += new System.EventHandler(this.ConfigForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigForm_FormClosed);
-            this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.Shown += new System.EventHandler(this.ConfigForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConfigForm_KeyDown);
             this.tableLayoutPanel1.ResumeLayout(false);

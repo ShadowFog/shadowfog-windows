@@ -7,7 +7,6 @@ using System.IO;
 using Shadowsocks.Controller;
 using Newtonsoft.Json;
 
-
 namespace Shadowsocks.Model
 {
     [Serializable]

@@ -17,7 +17,9 @@ namespace Shadowsocks.View
     {
         private ShadowsocksController controller;
 
-/*********************************<Start> add by Ian.May,Oct.16*********************************/
+/********************************* <Start> add by Ian.May,Oct.16 *********************************/
+// new add var
+/********************************* <Start> add by Ian.May,Oct.16 *********************************/
         private Point initialRightBottomCorner;
         private int ShadowFogModeFormWidth;
 
@@ -27,7 +29,7 @@ namespace Shadowsocks.View
         private const int EM_SETCUEBANNER = 0x1501;
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)]string lParam);
-/*********************************<End> add by Ian.May,Oct.16************************************/
+/********************************* <End> add by Ian.May,Oct.16 ************************************/
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
@@ -42,8 +44,9 @@ namespace Shadowsocks.View
             this.ServersListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PerformLayout();
 
-/******************************<Start> add by Ian.May,Oct.16**************************************/
-            //adjust the sequence because the modified UpdatTexts() relies on controller's instance
+/****************************** <Start> add by Ian.May,Oct.16 **************************************/
+//adjust the sequence because the modified UpdatTexts() relies on controller's instance
+/***************************** <Start> add by Ian.May,Oct.16 **************************************/
             this.controller = controller;
             controller.ConfigChanged += controller_ConfigChanged;
 
@@ -73,8 +76,9 @@ namespace Shadowsocks.View
             MyCancelButton.Text = I18N.GetString("Cancel");
             MoveUpButton.Text = I18N.GetString("Move &Up");
             MoveDownButton.Text = I18N.GetString("Move D&own");
-
 /**********************************<Start> add by Ian.May,Oct.16**********************************/
+//Text and other controls for shadowfog panel
+/***************************** <Start> add by Ian.May,Oct.16 **************************************/
             //this.Text = I18N.GetString("Edit Servers");
             this.Text = I18N.GetString("Sign In ShadowFog");
 
@@ -184,10 +188,23 @@ namespace Shadowsocks.View
             LoadSelectedServer();
         }
 
-        private void ConfigForm_Load(object sender, EventArgs e)
+/*****************************************************************************/
+// this part is specially for shadowfog pannel and shadowsocks pannel transition
+/*****************************************************************************/
+        private void LoadBackUpConfiguration()
         {
-
+            _modifiedConfiguration = controller.GetBackUpConfiguration();// load _configBackUp from memory
+            LoadConfiguration(_modifiedConfiguration);
+            _lastSelectedIndex = _modifiedConfiguration.index;
+            if (_lastSelectedIndex < 0)
+            {
+                _lastSelectedIndex = 0;
+            }
+            ServersListBox.SelectedIndex = _lastSelectedIndex;
+            UpdateMoveUpAndDownButton();
+            LoadSelectedServer();
         }
+/*****************************************************************************/
 
         private void ConfigForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -293,6 +310,7 @@ namespace Shadowsocks.View
                 MessageBox.Show(I18N.GetString("Please add at least one server"));
                 return;
             }
+            // SaveServers: _config ==> _configBackup, update _configBackup, save _config to gui-config.json
             controller.SaveServers(_modifiedConfiguration.configs, _modifiedConfiguration.localPort);
             // SelectedIndex remains valid
             // We handled this in event handlers, e.g. Add/DeleteButton, SelectedIndexChanged
@@ -315,12 +333,12 @@ namespace Shadowsocks.View
         {
             controller.ConfigChanged -= controller_ConfigChanged;
 /******************************************************<start>add by Ian.May Oct.16***********************************************************************/
+// when closing config window, save user name and password to user-info.json
+/******************************************************<start>add by Ian.May Oct.16***********************************************************************/
             if (isHashedPassword)
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ShadowFogPassword.Text, ShadowFogRememberUserCheck.Checked); }
             else
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
-
-            controller.RecoverSSConfig();// closing form will trigger the configBackup overwrite config and save, so for OK button need to update configBackup first
 /********************************************************<end>add by Ian.May Oct.16***********************************************************************/
         }
 
@@ -391,10 +409,11 @@ namespace Shadowsocks.View
         }
 
 /************************************************************<start>add by Ian.May Oct.16*******************************************************************/
+// main modification for shadowfog mode 
+/************************************************************<start>add by Ian.May Oct.16*******************************************************************/
 
         private void ShadowFogReload_Click(object sender, EventArgs e)
         {
-            // controller.isShadowFogMode = true;
             ShadowFogReload.Text = "Connecting...";
             // RecordClientUser() pass the username&passworf form textbox to ShadofogConfiguration object and save it to file accordingly
             if (isHashedPassword)
@@ -408,7 +427,7 @@ namespace Shadowsocks.View
             }
             catch (Exception Error)
             {
-                controller.RecoverSSConfig();// 
+                controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
             ShadowFogReload.Text = "Start ShadowFog!";
         }
@@ -426,9 +445,7 @@ namespace Shadowsocks.View
                 tableLayoutPanel2.Enabled = false;
                 ShadowFogPanel.Enabled = true;
                 this.Width = ShadowFogModeFormWidth;// (320,505) as defualt when DPI = 144;
-                //disable shadowsocks config panel????
                 this.Location = initialRightBottomCorner - this.Size;
-                controller.BackUpSSConfig(); // In shadowsocks Mode, edited servers, click add/delete buttons, then cache _config into _configBackup.configs and save _config
             }
             else
             {
@@ -438,8 +455,7 @@ namespace Shadowsocks.View
                 ShadowFogPanel.Enabled = false;
                 this.Width =  (int)(3.3 * ShadowFogModeFormWidth); // (1020,505) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
-                controller.RecoverSSConfig();//Loading _configBackUp to _config, then save _config to file;
-                LoadCurrentConfiguration(); //Load _config from file to configForm, avoid user to know the fognode address
+                LoadBackUpConfiguration(); //Load _configBackup from memory to configForm, avoid user to know the fognode address
             }
         }
 
@@ -460,9 +476,9 @@ namespace Shadowsocks.View
         private void ConfigForm_Activated(object sender, EventArgs e)
         {
             controller.isShadowFogMode = ShadoFogToggleCheck.Checked;
+           // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
         }
-
-        /************************************************************<end>add by Ian.May Oct.16*******************************************************************/
+/************************************************************<end>add by Ian.May Oct.16*******************************************************************/
 
     }
 }
