@@ -455,7 +455,9 @@ namespace Shadowsocks.View
                 ShadowFogPanel.Enabled = false;
                 this.Width =  (int)(3.3 * ShadowFogModeFormWidth); // (1020,505) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
-                LoadBackUpConfiguration(); //Load _configBackup from memory to configForm, avoid user to know the fognode address
+                // this is the only way to enter the shadowsocks panel;
+                // Load _configBackup from memory to configForm, avoid user to know the fognode address.
+                LoadBackUpConfiguration(); //only server infomation is needed, other settings ignored;
             }
         }
 

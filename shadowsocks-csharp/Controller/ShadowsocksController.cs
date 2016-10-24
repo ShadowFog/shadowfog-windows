@@ -588,14 +588,18 @@ namespace Shadowsocks.Controller
                 if (null != _fogServerReply.configs)
                 {
                     _config.configs = _fogServerReply.configs; //value pass proved;
-                    Configuration.Save(_config); //_config now is written into gui-config.json  with FogNode IP and Ports...
+                    Configuration.Save(_config); //_config now is written into gui-config.json with FogNode IP and Ports for "Reload()" next...
                     Console.WriteLine(I18N.GetString("Fog Node obtained. Please check connection!"));
                 }
             } 
                
             Reload(); // Reload() first load the _config from local gui-config.json
-            RecoverSSConfig();// give back the previous server information, overwrite the fognode infomation
-            Configuration.Save(_config);// write _config to gui-config.json
+            // here should add oneline to save servers from _configBackup and the other settings from _config
+            // while NOT CHANGING _config itself
+            string _configString = JsonConvert.SerializeObject(_config, Formatting.Indented);
+            Configuration _configCache = JsonConvert.DeserializeObject<Configuration>(_configString);
+            _configCache.configs = _configBackup.configs;
+            Configuration.Save(_configCache);
         }
 
         public void RecordClientUser(string userName, string hashedPassword, bool isSave)
