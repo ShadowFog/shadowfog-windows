@@ -580,12 +580,12 @@
             this.ShadoFogToggleCheck.Checked = true;
             this.ShadoFogToggleCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShadoFogToggleCheck.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(44, 387);
+            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(53, 387);
             this.ShadoFogToggleCheck.Margin = new System.Windows.Forms.Padding(0);
             this.ShadoFogToggleCheck.Name = "ShadoFogToggleCheck";
-            this.ShadoFogToggleCheck.Size = new System.Drawing.Size(177, 23);
+            this.ShadoFogToggleCheck.Size = new System.Drawing.Size(159, 23);
             this.ShadoFogToggleCheck.TabIndex = 6;
-            this.ShadoFogToggleCheck.Text = "Enable ShadowFog";
+            this.ShadoFogToggleCheck.Text = "ShadowFog Mode";
             this.ShadoFogToggleCheck.UseVisualStyleBackColor = true;
             this.ShadoFogToggleCheck.CheckedChanged += new System.EventHandler(this.ShadoFogToggleCheck_CheckedChanged);
             // 
@@ -653,6 +653,7 @@
             this.Text = "Edit Servers";
             this.Activated += new System.EventHandler(this.ConfigForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigForm_FormClosed);
+            this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.Shown += new System.EventHandler(this.ConfigForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConfigForm_KeyDown);
             this.tableLayoutPanel1.ResumeLayout(false);

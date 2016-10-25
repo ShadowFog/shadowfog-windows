@@ -485,6 +485,21 @@ namespace Shadowsocks.View
             }
             // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
         }
+
+        private void ConfigForm_Load(object sender, EventArgs e)
+        {
+            ToolTip ShadowFogMode = new ToolTip();
+            // Set up the delays for the ToolTip.
+            ShadowFogMode.AutoPopDelay = 5000;
+            ShadowFogMode.InitialDelay = 1000;
+            ShadowFogMode.ReshowDelay = 500;
+            // Force the ToolTip text to be displayed whether or not the form is active.
+            ShadowFogMode.ShowAlways = true;
+
+            // Set up the ToolTip text for the Button and Checkbox.
+            ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks Mode if you uncheck this");
+
+        }
         /************************************************************<end>add by Ian.May Oct.16*******************************************************************/
 
     }
