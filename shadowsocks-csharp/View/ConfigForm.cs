@@ -497,7 +497,7 @@ namespace Shadowsocks.View
             ShadowFogMode.ShowAlways = true;
 
             // Set up the ToolTip text for the Button and Checkbox.
-            ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks Mode if you uncheck this");
+            ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks if you uncheck this");
 
         }
 

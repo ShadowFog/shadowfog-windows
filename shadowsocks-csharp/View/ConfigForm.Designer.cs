@@ -539,7 +539,7 @@
             this.ShadowFogReload.Name = "ShadowFogReload";
             this.ShadowFogReload.Size = new System.Drawing.Size(224, 55);
             this.ShadowFogReload.TabIndex = 5;
-            this.ShadowFogReload.Text = "Start ShadowFog";
+            this.ShadowFogReload.Text = "Login ShadowFog";
             this.ShadowFogReload.UseVisualStyleBackColor = false;
             this.ShadowFogReload.Click += new System.EventHandler(this.ShadowFogReload_Click);
             // 
@@ -582,12 +582,12 @@
             this.ShadoFogToggleCheck.Checked = true;
             this.ShadoFogToggleCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShadoFogToggleCheck.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(53, 387);
+            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(62, 387);
             this.ShadoFogToggleCheck.Margin = new System.Windows.Forms.Padding(0);
             this.ShadoFogToggleCheck.Name = "ShadoFogToggleCheck";
-            this.ShadoFogToggleCheck.Size = new System.Drawing.Size(159, 23);
+            this.ShadoFogToggleCheck.Size = new System.Drawing.Size(141, 23);
             this.ShadoFogToggleCheck.TabIndex = 6;
-            this.ShadoFogToggleCheck.Text = "ShadowFog mode";
+            this.ShadoFogToggleCheck.Text = "ShadowFog On";
             this.ShadoFogToggleCheck.UseVisualStyleBackColor = true;
             this.ShadoFogToggleCheck.CheckedChanged += new System.EventHandler(this.ShadoFogToggleCheck_CheckedChanged);
             // 
