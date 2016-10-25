@@ -532,13 +532,12 @@
             this.ShadowFogReload.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ShadowFogReload.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.ShadowFogReload.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ShadowFogReload.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShadowFogReload.Location = new System.Drawing.Point(24, 144);
             this.ShadowFogReload.Margin = new System.Windows.Forms.Padding(0);
             this.ShadowFogReload.Name = "ShadowFogReload";
             this.ShadowFogReload.Size = new System.Drawing.Size(224, 55);
             this.ShadowFogReload.TabIndex = 5;
-            this.ShadowFogReload.Text = "Start ShadowFog!";
+            this.ShadowFogReload.Text = "Start ShadowFog";
             this.ShadowFogReload.UseVisualStyleBackColor = false;
             this.ShadowFogReload.Click += new System.EventHandler(this.ShadowFogReload_Click);
             // 

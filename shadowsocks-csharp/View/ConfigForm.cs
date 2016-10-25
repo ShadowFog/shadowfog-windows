@@ -414,6 +414,7 @@ namespace Shadowsocks.View
 
         private void ShadowFogReload_Click(object sender, EventArgs e)
         {
+            controller.isShaodowFogStarted = true; // next time will display "restart shadowfog"
             ShadowFogReload.Text = "Connecting...";
             // RecordClientUser() pass the username&passworf form textbox to ShadofogConfiguration object and save it to file accordingly
             if (isHashedPassword)
@@ -427,9 +428,9 @@ namespace Shadowsocks.View
             }
             catch (Exception Error)
             {
+                ShadowFogReload.Text = "Start ShadowFog";
                 controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
-            ShadowFogReload.Text = "Start ShadowFog!";
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
@@ -478,9 +479,13 @@ namespace Shadowsocks.View
         private void ConfigForm_Activated(object sender, EventArgs e)
         {
             controller.isShadowFogMode = ShadoFogToggleCheck.Checked;
-           // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
+            if (controller.isShaodowFogStarted)
+            {
+                ShadowFogReload.Text = "Restart ShadowFog";
+            }
+            // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
         }
-/************************************************************<end>add by Ian.May Oct.16*******************************************************************/
+        /************************************************************<end>add by Ian.May Oct.16*******************************************************************/
 
     }
 }

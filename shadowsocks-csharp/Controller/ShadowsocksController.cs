@@ -54,7 +54,8 @@ namespace Shadowsocks.Controller
         private ClientUser _clientUser;
         public bool isShadowFogMode;
         public bool isInitialStartup;
-/************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
+        public bool isShaodowFogStarted;// used for display" start/restart shadowfog"
+        /************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
 
         public class PathEventArgs : EventArgs
         {
