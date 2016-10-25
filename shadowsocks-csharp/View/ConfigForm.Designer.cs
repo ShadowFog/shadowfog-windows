@@ -67,6 +67,7 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CreateAccountLink = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.ServerGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -529,10 +530,11 @@
             // 
             // ShadowFogReload
             // 
+            this.ShadowFogReload.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ShadowFogReload.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ShadowFogReload.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.ShadowFogReload.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ShadowFogReload.Location = new System.Drawing.Point(24, 144);
+            this.ShadowFogReload.Location = new System.Drawing.Point(19, 145);
             this.ShadowFogReload.Margin = new System.Windows.Forms.Padding(0);
             this.ShadowFogReload.Name = "ShadowFogReload";
             this.ShadowFogReload.Size = new System.Drawing.Size(224, 55);
@@ -552,7 +554,7 @@
             this.ShadowFogRememberUserCheck.Name = "ShadowFogRememberUserCheck";
             this.ShadowFogRememberUserCheck.Size = new System.Drawing.Size(186, 23);
             this.ShadowFogRememberUserCheck.TabIndex = 2;
-            this.ShadowFogRememberUserCheck.Text = "Remember Password";
+            this.ShadowFogRememberUserCheck.Text = "Remember password";
             this.ShadowFogRememberUserCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ShadowFogRememberUserCheck.UseVisualStyleBackColor = true;
             // 
@@ -585,7 +587,7 @@
             this.ShadoFogToggleCheck.Name = "ShadoFogToggleCheck";
             this.ShadoFogToggleCheck.Size = new System.Drawing.Size(159, 23);
             this.ShadoFogToggleCheck.TabIndex = 6;
-            this.ShadoFogToggleCheck.Text = "ShadowFog Mode";
+            this.ShadoFogToggleCheck.Text = "ShadowFog mode";
             this.ShadoFogToggleCheck.UseVisualStyleBackColor = true;
             this.ShadoFogToggleCheck.CheckedChanged += new System.EventHandler(this.ShadoFogToggleCheck_CheckedChanged);
             // 
@@ -624,6 +626,7 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.groupBox1.Controls.Add(this.CreateAccountLink);
             this.groupBox1.Controls.Add(this.ShadowFogPanel);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
@@ -632,6 +635,18 @@
             this.groupBox1.Size = new System.Drawing.Size(265, 374);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
+            // 
+            // CreateAccountLink
+            // 
+            this.CreateAccountLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.CreateAccountLink.AutoSize = true;
+            this.CreateAccountLink.Location = new System.Drawing.Point(47, 341);
+            this.CreateAccountLink.Name = "CreateAccountLink";
+            this.CreateAccountLink.Size = new System.Drawing.Size(161, 18);
+            this.CreateAccountLink.TabIndex = 10;
+            this.CreateAccountLink.TabStop = true;
+            this.CreateAccountLink.Text = "Create an account";
+            this.CreateAccountLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CreateAccountLink_LinkClicked);
             // 
             // ConfigForm
             // 
@@ -676,6 +691,7 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -722,6 +738,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.LinkLabel CreateAccountLink;
     }
 }
 

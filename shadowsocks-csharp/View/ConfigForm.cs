@@ -500,6 +500,11 @@ namespace Shadowsocks.View
             ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks Mode if you uncheck this");
 
         }
+
+        private void CreateAccountLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://shadowfog.com/oss/siteIndex");
+        }
         /************************************************************<end>add by Ian.May Oct.16*******************************************************************/
 
     }
