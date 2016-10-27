@@ -482,6 +482,7 @@ namespace Shadowsocks.View
             if (controller.isShaodowFogStarted)
             {
                 ShadowFogReload.Text = "Restart ShadowFog";
+                this.Text = I18N.GetString("Running...");
             }
             // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
         }
