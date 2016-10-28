@@ -560,18 +560,17 @@ namespace Shadowsocks.Controller
             // Bad http response such as 404 will directly jump to shadowsocks reload();
             if (null != fogNodeList) 
             {
-                /******************************************************/
-                Console.WriteLine("fogNodeList=" + fogNodeList);
-                /******************************************************/
-
                 // _fogServerReply is used to recieve all msgs including errors when http response is 200 OK
                 // handle bad scheduler reply
                 try
                 {
                     // a better way is to use JObject or JArray, refer to UpdateChecker.cs
                     _fogServerReply = JsonConvert.DeserializeObject<ConfigurationShadowFog>(fogNodeList);
+                    /******************************************************/
+                    Console.WriteLine("FogNode = " + _fogServerReply.configs[0].server);
+                    /******************************************************/
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     MessageBox.Show(I18N.GetString("Illegal Reply From Scheduler!")); 
                 }

@@ -33,7 +33,7 @@ namespace Shadowsocks.Model
             JObject schedulerInfo = JObject.Parse(temp);
             string schedulerAddr = (string)schedulerInfo["scheduler_addr"];
             /******************************************************/
-             Console.WriteLine("Scheduler Address: " + schedulerAddr);
+             Console.WriteLine("Schdlr: " + schedulerAddr);
             /******************************************************/
             return GetFogCandidates(schedulerAddr, User);
         }
