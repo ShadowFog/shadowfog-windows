@@ -93,7 +93,7 @@ namespace Shadowsocks.View
 
             if (config.isDefault)
             {
-                _isFirstRun = true;
+                _isFirstRun = true; // can be adjusted for auto popping
                 ShowConfigForm();
             }
             else if(config.autoCheckUpdate)

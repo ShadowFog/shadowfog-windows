@@ -55,7 +55,7 @@ namespace Shadowsocks.Controller
         public bool isShadowFogMode;
         public bool isInitialStartup;
         public bool isShaodowFogStarted;// used for display" start/restart shadowfog"
-        /************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
+/************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
 
         public class PathEventArgs : EventArgs
         {
@@ -102,10 +102,12 @@ namespace Shadowsocks.Controller
 /***************************************************<Start> add by Ian.May 2016/10/15****************************************************/
 // for destructing fogNodes at closing stage, should not be handed from _config;(shallow copy)
 /***************************************************<Start> add by Ian.May 2016/10/15****************************************************/
-            _configBackup = Configuration.Load(); 
+            _configBackup = Configuration.Load();
             _clientUser = ClientUser.Load();
             isShadowFogMode = true;
             isInitialStartup = true;
+
+            SystemProxy.Update(_configBackup, true);// forcedisable = true ,means force _config.enabled = false to update(close) system proxy;
 /****************************************************<End> add by Ian.May 2016/10/15*****************************************************/
 
             _config = Configuration.Load();
@@ -114,6 +116,16 @@ namespace Shadowsocks.Controller
             StartReleasingMemory();
             StartTrafficStatistics(61);
         }
+
+/***************************************************<Start> add by Ian.May 2016/11/02****************************************************/
+// for destructor cancelling system proxy
+/***************************************************<Start> add by Ian.May 2016/10/02****************************************************/
+        ~ShadowsocksController() //destructor
+        {
+           SystemProxy.Update(_config, true); // forcedisable = true ,means force _config.enabled = false to update(close) system proxy;
+        }
+/****************************************************<End> add by Ian.May 2016/10/15*****************************************************/
+
 
         public void Start()
         {
@@ -135,6 +147,7 @@ namespace Shadowsocks.Controller
                 }
                 else
                 {
+                    ToggleEnable(true); // start system proxy automatically
                     Console.WriteLine("FogMode Starting...");
                     FogReload();
                 }
@@ -240,7 +253,11 @@ namespace Shadowsocks.Controller
         {
             _config.enabled = enabled;
             UpdateSystemProxy();
-            SaveConfig(_config);
+            /************************<Edited by IM Nov.2th>*****************************/
+            // avoid sava fog nodes in the gui-config.json
+            _configBackup.enabled = enabled;
+            SaveConfig(_configBackup);
+            /***************************************************************************/
             if (EnableStatusChanged != null)
             {
                 EnableStatusChanged(this, new EventArgs());
