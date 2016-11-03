@@ -84,8 +84,8 @@ namespace Shadowsocks.Model
             User.signature = User.GetSignature();
 
             string content;
-            // TLS v1.2 required
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // TLS v1.2 required according to  nginx server configs
+            //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             HttpWebRequest myHttpWebRequest = null;
             HttpWebResponse myHttpWebResponse = null;
 
