@@ -61,8 +61,7 @@ namespace Shadowsocks.Model
                     catch (Exception e)
                     {
                         //continue;
-                        MessageBox.Show(I18N.GetString("Fail to Get Scheduler address!"));
-                        //Console.WriteLine(e.Message);
+                        MessageBox.Show(e.Message);
                     }
                 }
                 else break;
@@ -85,9 +84,11 @@ namespace Shadowsocks.Model
             User.signature = User.GetSignature();
 
             string content;
-            
+            // TLS v1.2 required
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             HttpWebRequest myHttpWebRequest = null;
             HttpWebResponse myHttpWebResponse = null;
+
             myHttpWebRequest = (HttpWebRequest)WebRequest.Create(SchedulerURL + "?username=" + User.name + "&timestamp=" + User.timeStamp + "&nonce=" + User.nounce + "&transactionID=" + User.transactionID + "&signature=" + User.signature);
 
             Console.WriteLine("Username=" + User.name);
@@ -101,7 +102,7 @@ namespace Shadowsocks.Model
             }
             catch (Exception e)
             {
-                MessageBox.Show(I18N.GetString("No Response from Scheduler!"));
+                MessageBox.Show(e.Message);
                 return null;
             }
             // end handle bad http reponses

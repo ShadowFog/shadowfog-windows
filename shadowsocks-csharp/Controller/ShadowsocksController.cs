@@ -589,7 +589,7 @@ namespace Shadowsocks.Controller
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(I18N.GetString("Illegal Reply From Scheduler!")); 
+                    MessageBox.Show(e.Message); 
                 }
 
                 if (Convert.ToBoolean(_fogServerReply.errorcode))
