@@ -61,7 +61,7 @@ namespace Shadowsocks.Model
                     catch (Exception e)
                     {
                         //continue;
-                        MessageBox.Show(e.Message);
+                        MessageBox.Show("Preloader Address: "+e.Message);
                     }
                 }
                 else break;
@@ -95,14 +95,14 @@ namespace Shadowsocks.Model
             Console.WriteLine("Nounce=" + User.nounce);
             Console.WriteLine("TransactionID=" + User.transactionID);
 
-            // handle bad http responses
+            // handle bad http responses from scheduler
             try
             {
                 myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Scheduler Access: " + e.Message);
                 return null;
             }
             // end handle bad http reponses

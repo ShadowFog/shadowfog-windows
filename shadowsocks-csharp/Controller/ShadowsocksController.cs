@@ -589,7 +589,8 @@ namespace Shadowsocks.Controller
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message); 
+                    // not use msg box because of following error code will pop up again
+                    Console.WriteLine("FogNodeInfo Format: " + e.Message); 
                 }
 
                 if (Convert.ToBoolean(_fogServerReply.errorcode))

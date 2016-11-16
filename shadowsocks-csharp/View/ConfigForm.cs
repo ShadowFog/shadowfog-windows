@@ -424,13 +424,13 @@ namespace Shadowsocks.View
             try
             {
                 controller.Start();
-                this.Close();
             }
             catch (Exception Error)
             {
                 ShadowFogReload.Text = "Start ShadowFog";
                 controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
+            this.Close();
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
