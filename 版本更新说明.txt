@@ -1,0 +1,1 @@
+0.4.3-alpha: 删除了config_form的formclosed事件里回调函数中的 关于存储user信息的语句，避免发生close时怕抛出异常的问题

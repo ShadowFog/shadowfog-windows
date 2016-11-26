@@ -332,14 +332,6 @@ namespace Shadowsocks.View
         private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             controller.ConfigChanged -= controller_ConfigChanged;
-/******************************************************<start>add by Ian.May Oct.16***********************************************************************/
-// when closing config window, save user name and password to user-info.json
-/******************************************************<start>add by Ian.May Oct.16***********************************************************************/
-            if (isHashedPassword)
-            { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ShadowFogPassword.Text, ShadowFogRememberUserCheck.Checked); }
-            else
-            { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
-/********************************************************<end>add by Ian.May Oct.16***********************************************************************/
         }
 
         private void MoveConfigItem(int step)
