@@ -415,12 +415,21 @@ namespace Shadowsocks.View
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
             try
             {
+                //problems here,need to be checked
                 controller.Start();
             }
-            catch (Exception Error)
+            catch(Exception Error)
             {
-                ShadowFogReload.Text = "Start ShadowFog";
-                controller.RecoverSSConfig();// erase _config obtianed from scheduler
+                try
+                {
+                    ShadowFogReload.Text = "Start ShadowFog";
+                    controller.RecoverSSConfig();// erase _config obtianed from scheduler
+                }
+                catch(Exception ee)
+                {
+                    MessageBox.Show("bug001"+ee.Message);
+                }
+                
             }
             this.Close();
         }

@@ -139,7 +139,7 @@ namespace Shadowsocks.Controller
             {
                 // for initial start up, although isShadowFog Mode is checked,
                 // we don't want to call FogReload() without pressing the "Start ShadowFog" button;
-                if (isInitialStartup) 
+                if (isInitialStartup)
                 {
                     Console.WriteLine("Initial Starting...");
                     isInitialStartup = false;
@@ -147,7 +147,7 @@ namespace Shadowsocks.Controller
                 }
                 else
                 {
-                    ToggleEnable(true); // start system proxy automatically
+                    ToggleEnableWithoutReload(true); // start system proxy automatically
                     Console.WriteLine("FogMode Starting...");
                     FogReload();
                 }
@@ -155,7 +155,7 @@ namespace Shadowsocks.Controller
             else
             {
                 Console.WriteLine("Normal Starting...");
-/**********************************************************<End> add by Ian.May 2016/09/26***********************************************/
+                /**********************************************************<End> add by Ian.May 2016/09/26***********************************************/
                 Reload();
             }
         }
@@ -263,6 +263,21 @@ namespace Shadowsocks.Controller
                 EnableStatusChanged(this, new EventArgs());
             }
         }
+
+        /************************<Edited by IM Dec.20th>*****************************/
+        /********************* Potenitial bug fixes for disposed object *************/
+        public void ToggleEnableWithoutReload(bool enabled)
+        {
+            _config.enabled = enabled;
+            UpdateSystemProxy();
+            _configBackup.enabled = enabled;
+            Configuration.Save(_configBackup);
+            if (EnableStatusChanged != null)
+            {
+                EnableStatusChanged(this, new EventArgs());
+            }
+        }
+        /***************************************************************************/
 
         public void ToggleGlobal(bool global)
         {

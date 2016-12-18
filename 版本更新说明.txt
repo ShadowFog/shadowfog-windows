@@ -1,1 +1,2 @@
 0.4.3-alpha: 删除了config_form的formclosed事件里回调函数中的 关于存储user信息的语句，避免发生close时怕抛出异常的问题
+0.4.5-alpha: 修改了自动启动系统代理函数，加载时避免重复调用reload(),尝试进一步降低出现object disposed的概率。
