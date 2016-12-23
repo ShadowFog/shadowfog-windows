@@ -1,2 +1,10 @@
 0.4.3-alpha: 删除了config_form的formclosed事件里回调函数中的 关于存储user信息的语句，避免发生close时怕抛出异常的问题
 0.4.5-alpha: 修改了自动启动系统代理函数，加载时避免重复调用reload(),尝试进一步降低出现object disposed的概率。
+bug猜想：   
+reload()中有一段触发configChanged 事件代码：
+         if (ConfigChanged != null)
+            {
+                ConfigChanged(this, new EventArgs());
+            }
+猜测在shadowfog Reload中加载了两次reload()导致两次事件触发，其中可能有一次在configform销毁同时还未注销事件委托，导致第二次事件触发时无法找到configform的handler指向的对象,继而出错抛异常。
+当前也无法判明减少一次reload()是否会根除object disposed的影响，只能保持测试。

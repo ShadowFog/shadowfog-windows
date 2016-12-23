@@ -415,7 +415,6 @@ namespace Shadowsocks.View
             { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
             try
             {
-                //problems here,need to be checked
                 controller.Start();
             }
             catch(Exception Error)
