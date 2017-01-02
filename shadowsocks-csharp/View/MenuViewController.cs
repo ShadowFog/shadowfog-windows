@@ -537,9 +537,13 @@ namespace Shadowsocks.View
 
         void configForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            configForm.Dispose();
-            configForm = null;
-            Utils.ReleaseMemory(true);
+            if (configForm != null)
+            {
+                configForm.Dispose();
+                configForm = null;
+                Utils.ReleaseMemory(true);
+            }
+
             if (_isFirstRun)
             {
                 CheckUpdateForFirstRun();

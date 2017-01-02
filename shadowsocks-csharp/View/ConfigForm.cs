@@ -20,11 +20,11 @@ namespace Shadowsocks.View
 /********************************* <Start> add by Ian.May,Oct.16 *********************************/
 // new add var
 /********************************* <Start> add by Ian.May,Oct.16 *********************************/
-        private Point initialRightBottomCorner;
-        private int ShadowFogModeFormWidth;
+        private Point   initialRightBottomCorner;
+        private int     ShadowFogModeFormWidth;
 
-        private bool isHashedPassword;
-        private bool isPasswordTextboxClicked;
+        private bool    isHashedPassword;
+        private bool    isPasswordTextboxClicked;
 
         private const int EM_SETCUEBANNER = 0x1501;
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -55,7 +55,6 @@ namespace Shadowsocks.View
 
             ShadowFogModeFormWidth = this.Width;
 /*******************************<End> add by Ian.May,Oct.16***************************************/
-
             LoadCurrentConfiguration();
         }
 
@@ -98,7 +97,23 @@ namespace Shadowsocks.View
             }
             // must be put after the textbox value changed, in case the textchanged event triggerd to force this flag being false;
             isHashedPassword = ShadowFogRememberUserCheck.Checked;
-/***********************************<End> add by Ian.May,Oct.16*************************************/
+            /***********************************<End> add by Ian.May,Oct.16*************************************/
+
+
+            /**********************************<Start> add by Ian.May,Dec.30**********************************/
+            //tooltip/ for shadowfogToggleCheck
+            /***************************** <Start> add by Ian.May,Dec.30 **************************************/
+            ToolTip ShadowFogMode = new ToolTip();
+            // Set up the delays for the ToolTip.
+            ShadowFogMode.AutoPopDelay = 5000;
+            ShadowFogMode.InitialDelay = 1000;
+            ShadowFogMode.ReshowDelay = 500;
+            // Force the ToolTip text to be displayed whether or not the form is active.
+            ShadowFogMode.ShowAlways = true;
+
+            // Set up the ToolTip text for the Button and Checkbox.
+            ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks if you uncheck this");
+            /***********************************<End> add by Ian.May,Dec.30*************************************/
         }
 
         private void controller_ConfigChanged(object sender, EventArgs e)
@@ -416,21 +431,14 @@ namespace Shadowsocks.View
             try
             {
                 controller.Start();
+                this.Close();
             }
-            catch(Exception Error)
+            catch (Exception Error)
             {
-                try
-                {
-                    ShadowFogReload.Text = "Start ShadowFog";
-                    controller.RecoverSSConfig();// erase _config obtianed from scheduler
-                }
-                catch(Exception ee)
-                {
-                    MessageBox.Show("bug001"+ee.Message);
-                }
-                
+                ShadowFogReload.Text = "Start ShadowFog";
+                this.Text = I18N.GetString("Sign In ShadowFog");
+                controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
-            this.Close();
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
@@ -489,17 +497,6 @@ namespace Shadowsocks.View
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            ToolTip ShadowFogMode = new ToolTip();
-            // Set up the delays for the ToolTip.
-            ShadowFogMode.AutoPopDelay = 5000;
-            ShadowFogMode.InitialDelay = 1000;
-            ShadowFogMode.ReshowDelay = 500;
-            // Force the ToolTip text to be displayed whether or not the form is active.
-            ShadowFogMode.ShowAlways = true;
-
-            // Set up the ToolTip text for the Button and Checkbox.
-            ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks if you uncheck this");
-
         }
 
         private void CreateAccountLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

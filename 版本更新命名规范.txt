@@ -1,4 +1,4 @@
 filename inside: ShadowFog.exe
-filename outside: ShadowFog-0.2.8.zip
+filename outside: ShadowFog-0.4.1.zip
 
-提交release记得上传hash
+新release时需要上传hash等信息
