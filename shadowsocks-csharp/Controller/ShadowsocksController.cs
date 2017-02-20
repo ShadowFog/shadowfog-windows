@@ -54,7 +54,7 @@ namespace Shadowsocks.Controller
         private ClientUser _clientUser;
         public bool isShadowFogMode;
         public bool isInitialStartup;
-        public bool isShaodowFogStarted;// used for display" start/restart shadowfog"
+        public bool isShadowFogStarted;// used for display" start/restart shadowfog"
 /************************************************ <End> add by Ian.May 2016/10/15 ***************************************************/
 
         public class PathEventArgs : EventArgs
@@ -106,6 +106,7 @@ namespace Shadowsocks.Controller
             _clientUser = ClientUser.Load();
             isShadowFogMode = true;
             isInitialStartup = true;
+            isShadowFogStarted = false; 
 
             SystemProxy.Update(_configBackup, true);// forcedisable = true ,means force _config.enabled = false to update(close) system proxy;
 /****************************************************<End> add by Ian.May 2016/10/15*****************************************************/
@@ -147,9 +148,22 @@ namespace Shadowsocks.Controller
                 }
                 else
                 {
-                    ToggleEnableWithoutReload(true); // start system proxy automatically
                     Console.WriteLine("FogMode Starting...");
+                    ToggleEnableWithoutReload(true); // start system proxy automatically
+
+                    bool global_temp = false; // for some SB starting shadowfog with global mode
+                    if(_config.global)
+                    {
+                        global_temp = _config.global;
+                        ToggleGlobal(false);
+                    }
+
                     FogReload();
+
+                    if(global_temp)
+                    {
+                        ToggleGlobal(global_temp);
+                    }
                 }
             }
             else
@@ -588,7 +602,7 @@ namespace Shadowsocks.Controller
             Console.WriteLine("FogMode Reloading......");
             ConfigurationShadowFog _fogServerReply = new ConfigurationShadowFog();
 
-            string fogNodeList = ConfigurationShadowFog.GetFogNodeList(_clientUser);
+            string fogNodeList = ConfigurationShadowFog.GetFogNodeList(_clientUser, isShadowFogStarted);
             // Bad http response such as 404 will directly jump to shadowsocks reload();
             if (null != fogNodeList) 
             {

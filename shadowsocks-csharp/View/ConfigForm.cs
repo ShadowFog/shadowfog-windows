@@ -421,7 +421,6 @@ namespace Shadowsocks.View
 
         private void ShadowFogReload_Click(object sender, EventArgs e)
         {
-            controller.isShaodowFogStarted = true; // next time will display "restart shadowfog"
             ShadowFogReload.Text = "Connecting...";
             // RecordClientUser() pass the username&passworf form textbox to ShadofogConfiguration object and save it to file accordingly
             if (isHashedPassword)
@@ -431,6 +430,7 @@ namespace Shadowsocks.View
             try
             {
                 controller.Start();
+                controller.isShadowFogStarted = true; // next time will display "restart shadowfog"
                 this.Close();
             }
             catch (Exception Error)
@@ -487,7 +487,7 @@ namespace Shadowsocks.View
         private void ConfigForm_Activated(object sender, EventArgs e)
         {
             controller.isShadowFogMode = ShadoFogToggleCheck.Checked;
-            if (controller.isShaodowFogStarted)
+            if (controller.isShadowFogStarted)
             {
                 ShadowFogReload.Text = "Restart ShadowFog";
                 this.Text = I18N.GetString("Running...");

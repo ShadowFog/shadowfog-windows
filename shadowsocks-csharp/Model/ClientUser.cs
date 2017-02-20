@@ -28,21 +28,19 @@ namespace Shadowsocks.Model
             DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             return (int)(DateTime.Now - startTime).TotalSeconds;
         }
-
         public string GetNounce()
         {
             return "nounce";
         }
-
         public int GetTransactionID()
         {
             return 50;
         }
-
         public string GetSignature()
         {
             return HMAC_SHA256("shadowfog" + timeStamp + nounce + name, pswdHashed);
         }
+
 
         public static string SHA256(string str)
         {

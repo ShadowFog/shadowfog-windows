@@ -25,7 +25,7 @@ namespace Shadowsocks.Model
 /****************** The following part tries to request the scheduler for getting a fogNode as proxy*************************/
 /****************************************************************************************************************************/
 
-        public static string GetFogNodeList(ClientUser User)
+        public static string GetFogNodeList(ClientUser User, bool isShadowFogStarted)
         {
             string tempBase64 = GetFogScheduler();
             byte[] tempBytes = Convert.FromBase64String(tempBase64);
@@ -35,7 +35,7 @@ namespace Shadowsocks.Model
             /******************************************************/
              Console.WriteLine("Schdlr: " + schedulerAddr);
             /******************************************************/
-            return GetFogCandidates(schedulerAddr, User);
+            return GetFogCandidates(schedulerAddr, User, isShadowFogStarted);
         }
 
         public static string GetFogScheduler()
@@ -75,7 +75,7 @@ namespace Shadowsocks.Model
             return content;
         }
 
-        public static string GetFogCandidates(string SchedulerURL, ClientUser User)
+        public static string GetFogCandidates(string SchedulerURL, ClientUser User, bool isShadowFogStarted)
         {
             //ClientUser's parameters are highly correlated with time, so these paras should be generate in real time;
             User.timeStamp = User.GetTimeStamp();
@@ -89,11 +89,12 @@ namespace Shadowsocks.Model
             HttpWebRequest myHttpWebRequest = null;
             HttpWebResponse myHttpWebResponse = null;
 
-            myHttpWebRequest = (HttpWebRequest)WebRequest.Create(SchedulerURL + "?username=" + User.name + "&timestamp=" + User.timeStamp + "&nonce=" + User.nounce + "&transactionID=" + User.transactionID + "&signature=" + User.signature);
+            myHttpWebRequest = (HttpWebRequest)WebRequest.Create(SchedulerURL + "?username=" + User.name + "&timestamp=" + User.timeStamp + "&nonce=" + User.nounce + "&transactionID=" + User.transactionID + "&signature=" + User.signature + "&clientstatus=" + isShadowFogStarted);
 
             Console.WriteLine("Username=" + User.name);
             Console.WriteLine("Nounce=" + User.nounce);
             Console.WriteLine("TransactionID=" + User.transactionID);
+            Console.WriteLine("Clientstatus=" + isShadowFogStarted);
 
             // handle bad http responses from scheduler
             try

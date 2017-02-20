@@ -84,7 +84,14 @@ namespace Shadowsocks
                 _viewController = new MenuViewController(_controller);
                 HotKeys.Init();
                 _controller.Start();
-                Application.Run();
+                try
+                {
+                    Application.Run();
+                }
+                catch (ObjectDisposedException bug)
+                {
+                    MessageBox.Show("Connection crashed due to: " + bug.Message);
+                }
             }
         }
 
