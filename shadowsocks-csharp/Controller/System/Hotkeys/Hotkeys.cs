@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
 using System.Windows.Input;
 using GlobalHotKey;
 
-namespace Shadowsocks.Util
+namespace Shadowsocks.Controller.Hotkeys
 {
     public static class HotKeys
     {
@@ -16,10 +15,12 @@ namespace Shadowsocks.Util
         // map key and corresponding handler function
         private static Dictionary<HotKey, HotKeyCallBackHandler> _keymap = new Dictionary<HotKey, HotKeyCallBackHandler>();
 
-        public static void Init()
+        public static void Init(ShadowsocksController controller)
         {
             _hotKeyManager = new HotKeyManager();
             _hotKeyManager.KeyPressed += HotKeyManagerPressed;
+
+            HotkeyCallbacks.InitInstance(controller);
         }
 
         public static void Destroy()
@@ -168,12 +169,6 @@ namespace Shadowsocks.Util
             _hotKeyManager.Unregister(key);
             if(_keymap.ContainsKey(key))
                 _keymap.Remove(key);
-        }
-
-        public static IEnumerable<TControl> GetChildControls<TControl>(this Control control) where TControl : Control
-        {
-            var children = control.Controls.Count > 0 ? control.Controls.OfType<TControl>() : Enumerable.Empty<TControl>();
-            return children.SelectMany(c => GetChildControls<TControl>(c)).Concat(children);
         }
     }
 }

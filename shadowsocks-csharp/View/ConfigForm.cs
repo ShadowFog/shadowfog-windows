@@ -17,19 +17,19 @@ namespace Shadowsocks.View
     {
         private ShadowsocksController controller;
 
-/********************************* <Start> add by Ian.May,Oct.16 *********************************/
-// new add var
-/********************************* <Start> add by Ian.May,Oct.16 *********************************/
-        private Point   initialRightBottomCorner;
-        private int     ShadowFogModeFormWidth;
+        /********************************* <Start> add by Ian.May,Oct.16 *********************************/
+        // new add var
+        private Point initialRightBottomCorner;
+        private int ShadowFogModeFormWidth;
 
-        private bool    isHashedPassword;
-        private bool    isPasswordTextboxClicked;
+        private bool isHashedPassword;
+        private bool isPasswordTextboxClicked;
 
         private const int EM_SETCUEBANNER = 0x1501;
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)]string lParam);
-/********************************* <End> add by Ian.May,Oct.16 ************************************/
+        // ends
+        /********************************* <End> add by Ian.May,Oct.16 ************************************/
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
@@ -44,9 +44,8 @@ namespace Shadowsocks.View
             this.ServersListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PerformLayout();
 
-/****************************** <Start> add by Ian.May,Oct.16 **************************************/
-//adjust the sequence because the modified UpdatTexts() relies on controller's instance
-/***************************** <Start> add by Ian.May,Oct.16 **************************************/
+            /****************************** <Start> add by Ian.May,Oct.16 **************************************/
+            //adjust the sequence because the modified UpdatTexts() relies on controller's instance
             this.controller = controller;
             controller.ConfigChanged += controller_ConfigChanged;
 
@@ -54,7 +53,9 @@ namespace Shadowsocks.View
             this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
 
             ShadowFogModeFormWidth = this.Width;
-/*******************************<End> add by Ian.May,Oct.16***************************************/
+            //ends
+            /*******************************<End> add by Ian.May,Oct.16***************************************/
+
             LoadCurrentConfiguration();
         }
 
@@ -69,17 +70,18 @@ namespace Shadowsocks.View
             EncryptionLabel.Text = I18N.GetString("Encryption");
             ProxyPortLabel.Text = I18N.GetString("Proxy Port");
             RemarksLabel.Text = I18N.GetString("Remarks");
+            TimeoutLabel.Text = I18N.GetString("Timeout(Sec)");
             OneTimeAuth.Text = I18N.GetString("Onetime Authentication");
             ServerGroupBox.Text = I18N.GetString("Server");
             OKButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
             MoveUpButton.Text = I18N.GetString("Move &Up");
             MoveDownButton.Text = I18N.GetString("Move D&own");
-/**********************************<Start> add by Ian.May,Oct.16**********************************/
-//Text and other controls for shadowfog panel
-/***************************** <Start> add by Ian.May,Oct.16 **************************************/
+            this.Text = I18N.GetString("Edit Servers");
+            /**********************************<Start> add by Ian.May,Oct.16**********************************/
+            //Text and other controls for shadowfog panel
             //this.Text = I18N.GetString("Edit Servers");
-            this.Text = I18N.GetString("Sign In ShadowFog");
+            this.Text = I18N.GetString("Sign In");
 
             isPasswordTextboxClicked = false;
             // when loading the initial UI, should judge whether to load the user information from local file
@@ -87,7 +89,6 @@ namespace Shadowsocks.View
             if (ShadowFogRememberUserCheck.Checked)
             {
                 ShadowFogUserName.Text = controller.GetClientUserName();
-                // the Text is hashed password, not the password itself
                 ShadowFogPassword.Text = controller.GetClientUserPasswordHashed();
             }
             else
@@ -96,13 +97,12 @@ namespace Shadowsocks.View
                 SendMessage(ShadowFogPassword.Handle, EM_SETCUEBANNER, 0, " Password...");
             }
             // must be put after the textbox value changed, in case the textchanged event triggerd to force this flag being false;
+            // problem here: checked is to remember password, only when auto load password case, no modification to textbox, the password is auto hashed;
             isHashedPassword = ShadowFogRememberUserCheck.Checked;
+            //Ends
             /***********************************<End> add by Ian.May,Oct.16*************************************/
-
-
             /**********************************<Start> add by Ian.May,Dec.30**********************************/
             //tooltip/ for shadowfogToggleCheck
-            /***************************** <Start> add by Ian.May,Dec.30 **************************************/
             ToolTip ShadowFogMode = new ToolTip();
             // Set up the delays for the ToolTip.
             ShadowFogMode.AutoPopDelay = 5000;
@@ -113,6 +113,7 @@ namespace Shadowsocks.View
 
             // Set up the ToolTip text for the Button and Checkbox.
             ShadowFogMode.SetToolTip(this.ShadoFogToggleCheck, "Switch to Shadowsocks if you uncheck this");
+            //ends
             /***********************************<End> add by Ian.May,Dec.30*************************************/
         }
 
@@ -127,7 +128,7 @@ namespace Shadowsocks.View
             this.Show();
             IPTextBox.Focus();
         }
-        
+
         private bool SaveOldSelectedServer()
         {
             try
@@ -136,15 +137,30 @@ namespace Shadowsocks.View
                 {
                     return true;
                 }
-                Server server = new Server
+                Server server = new Server();
+
+                if (Uri.CheckHostName(server.server = IPTextBox.Text.Trim()) == UriHostNameType.Unknown)
                 {
-                    server = IPTextBox.Text.Trim(),
-                    server_port = int.Parse(ServerPortTextBox.Text),
-                    password = PasswordTextBox.Text,
-                    method = EncryptionSelect.Text,
-                    remarks = RemarksTextBox.Text,
-                    auth = OneTimeAuth.Checked
-                };
+                    MessageBox.Show(I18N.GetString("Invalid server address"));
+                    IPTextBox.Focus();
+                    return false;
+                }
+                if (!int.TryParse(ServerPortTextBox.Text, out server.server_port))
+                {
+                    MessageBox.Show(I18N.GetString("Illegal port number format"));
+                    ServerPortTextBox.Focus();
+                    return false;
+                }
+                server.password = PasswordTextBox.Text;
+                server.method = EncryptionSelect.Text;
+                server.remarks = RemarksTextBox.Text;
+                if (!int.TryParse(TimeoutTextBox.Text, out server.timeout))
+                {
+                    MessageBox.Show(I18N.GetString("Illegal timeout format"));
+                    TimeoutTextBox.Focus();
+                    return false;
+                }
+                server.auth = OneTimeAuth.Checked;
                 int localPort = int.Parse(ProxyPortTextBox.Text);
                 Configuration.CheckServer(server);
                 Configuration.CheckLocalPort(localPort);
@@ -152,10 +168,6 @@ namespace Shadowsocks.View
                 _modifiedConfiguration.localPort = localPort;
 
                 return true;
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show(I18N.GetString("Illegal port number format"));
             }
             catch (Exception ex)
             {
@@ -176,6 +188,7 @@ namespace Shadowsocks.View
                 ProxyPortTextBox.Text = _modifiedConfiguration.localPort.ToString();
                 EncryptionSelect.Text = server.method ?? "aes-256-cfb";
                 RemarksTextBox.Text = server.remarks;
+                TimeoutTextBox.Text = server.timeout.ToString();
                 OneTimeAuth.Checked = server.auth;
             }
         }
@@ -194,7 +207,7 @@ namespace Shadowsocks.View
             _modifiedConfiguration = controller.GetConfigurationCopy();
             LoadConfiguration(_modifiedConfiguration);
             _lastSelectedIndex = _modifiedConfiguration.index;
-            if (_lastSelectedIndex < 0)
+            if (_lastSelectedIndex < 0 || _lastSelectedIndex >= ServersListBox.Items.Count)
             {
                 _lastSelectedIndex = 0;
             }
@@ -203,9 +216,8 @@ namespace Shadowsocks.View
             LoadSelectedServer();
         }
 
-/*****************************************************************************/
-// this part is specially for shadowfog pannel and shadowsocks pannel transition
-/*****************************************************************************/
+        /************************************<Start> add by Ian.May,Dec.30*****************************************/
+        // this part is specially for shadowfog pannel and shadowsocks pannel transition
         private void LoadBackUpConfiguration()
         {
             _modifiedConfiguration = controller.GetBackUpConfiguration();// load _configBackUp from memory
@@ -219,7 +231,13 @@ namespace Shadowsocks.View
             UpdateMoveUpAndDownButton();
             LoadSelectedServer();
         }
-/*****************************************************************************/
+        //Ends
+        /*************************************<End> add by Ian.May,Dec.30********************************************/
+
+        private void ConfigForm_Load(object sender, EventArgs e)
+        {
+
+        }
 
         private void ConfigForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -325,7 +343,6 @@ namespace Shadowsocks.View
                 MessageBox.Show(I18N.GetString("Please add at least one server"));
                 return;
             }
-            // SaveServers: _config ==> _configBackup, update _configBackup, save _config to gui-config.json
             controller.SaveServers(_modifiedConfiguration.configs, _modifiedConfiguration.localPort);
             // SelectedIndex remains valid
             // We handled this in event handlers, e.g. Add/DeleteButton, SelectedIndexChanged
@@ -353,7 +370,7 @@ namespace Shadowsocks.View
         {
             int index = ServersListBox.SelectedIndex;
             Server server = _modifiedConfiguration.configs[index];
-            object item = ServersListBox.SelectedItem;
+            object item = ServersListBox.Items[index];
 
             _modifiedConfiguration.configs.Remove(server);
             _modifiedConfiguration.configs.Insert(index + step, server);
@@ -415,10 +432,8 @@ namespace Shadowsocks.View
             }
         }
 
-/************************************************************<start>add by Ian.May Oct.16*******************************************************************/
-// main modification for shadowfog mode 
-/************************************************************<start>add by Ian.May Oct.16*******************************************************************/
-
+        /************************************************************<start>add by Ian.May Oct.16*******************************************************************/
+        // main modification for shadowfog mode 
         private void ShadowFogReload_Click(object sender, EventArgs e)
         {
             ShadowFogReload.Text = "Connecting...";
@@ -435,25 +450,23 @@ namespace Shadowsocks.View
             }
             catch (Exception Error)
             {
-                ShadowFogReload.Text = "Start ShadowFog";
-                this.Text = I18N.GetString("Sign In ShadowFog");
+                ShadowFogReload.Text = "Start";
+                this.Text = I18N.GetString("Sign In");
                 controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
         {
-            //default shadowfog mode width is 337px;    [337,345]px is acceptable
-            //full display mode width is 1137px;        [1120,1137]px is acceptable
-            initialRightBottomCorner =this.Location + this.Size;
+            initialRightBottomCorner = this.Location + this.Size;
 
             if (ShadoFogToggleCheck.Checked)
             {
                 controller.isShadowFogMode = true;
-                Text = I18N.GetString("Sign In ShadowFog");
+                Text = I18N.GetString("Sign In");
                 tableLayoutPanel2.Enabled = false;
                 ShadowFogPanel.Enabled = true;
-                this.Width = ShadowFogModeFormWidth;// (320,505) as defualt when DPI = 144;
+                this.Width = ShadowFogModeFormWidth;// (328,555) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
             }
             else
@@ -462,7 +475,7 @@ namespace Shadowsocks.View
                 Text = I18N.GetString("Edit Servers");
                 tableLayoutPanel2.Enabled = true;
                 ShadowFogPanel.Enabled = false;
-                this.Width =  (int)(3.3 * ShadowFogModeFormWidth); // (1020,505) as defualt when DPI = 144;
+                this.Width = (int)(3.3 * ShadowFogModeFormWidth); // (1020,505) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
                 // this is the only way to enter the shadowsocks panel;
                 // Load _configBackup from memory to configForm, avoid user to know the fognode address.
@@ -489,21 +502,18 @@ namespace Shadowsocks.View
             controller.isShadowFogMode = ShadoFogToggleCheck.Checked;
             if (controller.isShadowFogStarted)
             {
-                ShadowFogReload.Text = "Restart ShadowFog";
+                ShadowFogReload.Text = "Restart";
                 this.Text = I18N.GetString("Running...");
             }
             // since this Form always begins with shadowfog panel it can show the backup config later when unchecking "enable shadowfog“ mode
-        }
-
-        private void ConfigForm_Load(object sender, EventArgs e)
-        {
         }
 
         private void CreateAccountLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://shadowfog.com/oss/siteIndex");
         }
-        /************************************************************<end>add by Ian.May Oct.16*******************************************************************/
+        //Ends
+        /*************************************************<end>add by Ian.May Oct.16**********************************************************/
 
     }
 }

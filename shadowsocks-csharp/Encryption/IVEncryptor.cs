@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Net;
 
@@ -108,7 +106,7 @@ namespace Shadowsocks.Encryption
         #region OneTimeAuth
 
         public const int ONETIMEAUTH_FLAG = 0x10;
-        public const int ADDRTYPE_MASK = 0xF;
+        public const int ADDRTYPE_MASK = 0xEF;
 
         public const int ONETIMEAUTH_BYTES = 10;
 
@@ -237,10 +235,7 @@ namespace Shadowsocks.Encryption
 
         protected static void randBytes(byte[] buf, int length)
         {
-            byte[] temp = new byte[length];
-            RNGCryptoServiceProvider rngServiceProvider = new RNGCryptoServiceProvider();
-            rngServiceProvider.GetBytes(temp);
-            temp.CopyTo(buf, 0);
+            RNG.GetBytes(buf, length);
         }
 
         public override void Encrypt(byte[] buf, int length, byte[] outbuf, out int outlength)

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ShadowFog")]
-[assembly: AssemblyCopyright("ShadowFog")]
+[assembly: AssemblyCopyright("ShadowFog & Shadowsocks 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

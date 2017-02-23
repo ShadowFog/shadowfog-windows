@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-
+using System.Web;
 using Shadowsocks.Controller;
 
 namespace Shadowsocks.Model
@@ -10,10 +10,12 @@ namespace Shadowsocks.Model
     public class Server
     {
         public static readonly Regex
-            UrlFinder = new Regex("^ss://((?:[A-Za-z0-9+/]+)|((?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?))$",
-                                  RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            UrlFinder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?$", RegexOptions.IgnoreCase),
             DetailsParser = new Regex("^((?<method>.+?)(?<auth>-auth)??:(?<password>.*)@(?<hostname>.+?)" +
-                                      ":(?<port>\\d+?))$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                      ":(?<port>\\d+?))$", RegexOptions.IgnoreCase);
+
+        private const int DefaultServerTimeoutSec = 5;
+        public const int MaxServerTimeoutSec = 20;
 
         public string server;
         public int server_port;
@@ -21,6 +23,7 @@ namespace Shadowsocks.Model
         public string method;
         public string remarks;
         public bool auth;
+        public int timeout;
 
         public override int GetHashCode()
         {
@@ -42,9 +45,7 @@ namespace Shadowsocks.Model
             string serverStr;
             // CheckHostName() won't do a real DNS lookup
             var hostType = Uri.CheckHostName( server );
-            if ( hostType == UriHostNameType.Unknown ) {
-                throw new FormatException("Invalid Server Address.");
-            }
+
             switch ( hostType ) {
                 case UriHostNameType.IPv6:
                     serverStr = $"[{server}]:{server_port}";
@@ -82,10 +83,10 @@ namespace Shadowsocks.Model
                     break;
                 default:
                     // IPv4 and domain name
-                    if(isShadowFogMode)
+                    if (isShadowFogMode)
                     {
                         var serverFragments = server.Split('.');
-                        serverStr = $"*.{serverFragments[serverFragments.Length-1]}:{server_port}"; // for the 4th fragment
+                        serverStr = $"*.{serverFragments[serverFragments.Length - 1]}:{server_port}"; // for the 4th fragment
                     }
                     else
                     {
@@ -109,6 +110,7 @@ namespace Shadowsocks.Model
             password = "";
             remarks = "";
             auth = false;
+            timeout = DefaultServerTimeoutSec;
         }
 
         public Server(string ssURL) : this()
@@ -116,6 +118,9 @@ namespace Shadowsocks.Model
             var match = UrlFinder.Match(ssURL);
             if (!match.Success) throw new FormatException();
             var base64 = match.Groups[1].Value;
+            var tag = match.Groups[3].Value;
+            if (!tag.IsNullOrEmpty())
+                remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
             match = DetailsParser.Match(Encoding.UTF8.GetString(Convert.FromBase64String(
                 base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
             method = match.Groups["method"].Value;
