@@ -15,3 +15,5 @@ reload()中有一段触发configChanged 事件代码：
 
 0.5.0.0: 把shadowfog全部内容合并至shadowsocks3.4.3版中
 0.5.0.1：调整configform的尺寸，修改两处对应shadowsocks的翻译转换至shadowfog
+0.5.0.2: 调整shadowsocks尺寸，groupbox的autosize设置为false
+0.5.0.3：assembly info中子版本号加入更新

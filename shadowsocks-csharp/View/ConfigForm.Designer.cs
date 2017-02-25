@@ -69,6 +69,7 @@
             this.ShadowFogPasswordPicture = new System.Windows.Forms.PictureBox();
             this.ShadowFogUserPicture = new System.Windows.Forms.PictureBox();
             this.ShadoFogToggleCheck = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.ServerGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -80,6 +81,7 @@
             this.ShadowFogGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ShadowFogPasswordPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShadowFogUserPicture)).BeginInit();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -343,14 +345,13 @@
             // 
             // ServerGroupBox
             // 
-            this.ServerGroupBox.AutoSize = true;
             this.ServerGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ServerGroupBox.Controls.Add(this.tableLayoutPanel1);
             this.ServerGroupBox.Location = new System.Drawing.Point(266, 0);
             this.ServerGroupBox.Margin = new System.Windows.Forms.Padding(18, 0, 0, 0);
             this.ServerGroupBox.Name = "ServerGroupBox";
             this.ServerGroupBox.Padding = new System.Windows.Forms.Padding(4);
-            this.ServerGroupBox.Size = new System.Drawing.Size(416, 309);
+            this.ServerGroupBox.Size = new System.Drawing.Size(416, 307);
             this.ServerGroupBox.TabIndex = 0;
             this.ServerGroupBox.TabStop = false;
             this.ServerGroupBox.Text = "Server";
@@ -381,14 +382,14 @@
             this.tableLayoutPanel2.Controls.Add(this.ServersListBox, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.ServerGroupBox, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(-701, 18);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(682, 450);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(682, 448);
             this.tableLayoutPanel2.TabIndex = 7;
             // 
             // tableLayoutPanel6
@@ -401,7 +402,7 @@
             this.tableLayoutPanel6.Controls.Add(this.MoveDownButton, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.MoveUpButton, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 403);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 401);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
@@ -444,7 +445,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.Controls.Add(this.ProxyPortTextBox, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.ProxyPortLabel, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(392, 309);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(392, 307);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.Padding = new System.Windows.Forms.Padding(4);
@@ -490,7 +491,7 @@
             this.tableLayoutPanel3.Controls.Add(this.MyCancelButton, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.OKButton, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(446, 407);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(446, 405);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 0, 4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -509,7 +510,7 @@
             this.tableLayoutPanel4.Controls.Add(this.DeleteButton, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.AddButton, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 309);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 307);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
@@ -532,15 +533,19 @@
             // 
             // ShadowFogPanel
             // 
-            this.ShadowFogPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShadowFogPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShadowFogPanel.AutoSize = true;
             this.ShadowFogPanel.Controls.Add(this.ShadowFogGroupBox);
-            this.ShadowFogPanel.Location = new System.Drawing.Point(20, 18);
+            this.ShadowFogPanel.Controls.Add(this.ShadoFogToggleCheck);
+            this.ShadowFogPanel.Location = new System.Drawing.Point(712, 3);
             this.ShadowFogPanel.Name = "ShadowFogPanel";
-            this.ShadowFogPanel.Size = new System.Drawing.Size(265, 422);
+            this.ShadowFogPanel.Size = new System.Drawing.Size(268, 442);
             this.ShadowFogPanel.TabIndex = 8;
             // 
             // ShadowFogGroupBox
             // 
+            this.ShadowFogGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ShadowFogGroupBox.Controls.Add(this.ShadowFogReload);
             this.ShadowFogGroupBox.Controls.Add(this.ShadowFogPassword);
             this.ShadowFogGroupBox.Controls.Add(this.ShadowFogUserName);
@@ -548,10 +553,9 @@
             this.ShadowFogGroupBox.Controls.Add(this.CreateAccountLink);
             this.ShadowFogGroupBox.Controls.Add(this.ShadowFogPasswordPicture);
             this.ShadowFogGroupBox.Controls.Add(this.ShadowFogUserPicture);
-            this.ShadowFogGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ShadowFogGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.ShadowFogGroupBox.Location = new System.Drawing.Point(0, -3);
             this.ShadowFogGroupBox.Name = "ShadowFogGroupBox";
-            this.ShadowFogGroupBox.Size = new System.Drawing.Size(265, 422);
+            this.ShadowFogGroupBox.Size = new System.Drawing.Size(262, 401);
             this.ShadowFogGroupBox.TabIndex = 0;
             this.ShadowFogGroupBox.TabStop = false;
             this.ShadowFogGroupBox.Text = "ShadowFog";
@@ -561,9 +565,9 @@
             this.ShadowFogReload.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ShadowFogReload.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.ShadowFogReload.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ShadowFogReload.Location = new System.Drawing.Point(17, 179);
+            this.ShadowFogReload.Location = new System.Drawing.Point(16, 179);
             this.ShadowFogReload.Name = "ShadowFogReload";
-            this.ShadowFogReload.Size = new System.Drawing.Size(234, 45);
+            this.ShadowFogReload.Size = new System.Drawing.Size(232, 45);
             this.ShadowFogReload.TabIndex = 7;
             this.ShadowFogReload.Text = "Log In";
             this.ShadowFogReload.UseVisualStyleBackColor = false;
@@ -571,7 +575,7 @@
             // 
             // ShadowFogPassword
             // 
-            this.ShadowFogPassword.Location = new System.Drawing.Point(51, 90);
+            this.ShadowFogPassword.Location = new System.Drawing.Point(47, 90);
             this.ShadowFogPassword.Name = "ShadowFogPassword";
             this.ShadowFogPassword.Size = new System.Drawing.Size(200, 28);
             this.ShadowFogPassword.TabIndex = 6;
@@ -581,7 +585,7 @@
             // 
             // ShadowFogUserName
             // 
-            this.ShadowFogUserName.Location = new System.Drawing.Point(51, 50);
+            this.ShadowFogUserName.Location = new System.Drawing.Point(47, 50);
             this.ShadowFogUserName.Name = "ShadowFogUserName";
             this.ShadowFogUserName.Size = new System.Drawing.Size(200, 28);
             this.ShadowFogUserName.TabIndex = 5;
@@ -589,7 +593,7 @@
             // ShadowFogRememberUserCheck
             // 
             this.ShadowFogRememberUserCheck.AutoSize = true;
-            this.ShadowFogRememberUserCheck.Location = new System.Drawing.Point(50, 137);
+            this.ShadowFogRememberUserCheck.Location = new System.Drawing.Point(49, 137);
             this.ShadowFogRememberUserCheck.Name = "ShadowFogRememberUserCheck";
             this.ShadowFogRememberUserCheck.Size = new System.Drawing.Size(178, 22);
             this.ShadowFogRememberUserCheck.TabIndex = 4;
@@ -598,8 +602,9 @@
             // 
             // CreateAccountLink
             // 
+            this.CreateAccountLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.CreateAccountLink.AutoSize = true;
-            this.CreateAccountLink.Location = new System.Drawing.Point(54, 381);
+            this.CreateAccountLink.Location = new System.Drawing.Point(50, 361);
             this.CreateAccountLink.Name = "CreateAccountLink";
             this.CreateAccountLink.Size = new System.Drawing.Size(161, 18);
             this.CreateAccountLink.TabIndex = 2;
@@ -611,7 +616,7 @@
             // 
             this.ShadowFogPasswordPicture.BackgroundImage = global::Shadowsocks.Properties.Resources.password;
             this.ShadowFogPasswordPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ShadowFogPasswordPicture.Location = new System.Drawing.Point(16, 92);
+            this.ShadowFogPasswordPicture.Location = new System.Drawing.Point(15, 92);
             this.ShadowFogPasswordPicture.Name = "ShadowFogPasswordPicture";
             this.ShadowFogPasswordPicture.Size = new System.Drawing.Size(23, 23);
             this.ShadowFogPasswordPicture.TabIndex = 1;
@@ -621,7 +626,7 @@
             // 
             this.ShadowFogUserPicture.BackgroundImage = global::Shadowsocks.Properties.Resources.username;
             this.ShadowFogUserPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ShadowFogUserPicture.Location = new System.Drawing.Point(16, 52);
+            this.ShadowFogUserPicture.Location = new System.Drawing.Point(15, 52);
             this.ShadowFogUserPicture.Name = "ShadowFogUserPicture";
             this.ShadowFogUserPicture.Size = new System.Drawing.Size(23, 23);
             this.ShadowFogUserPicture.TabIndex = 0;
@@ -629,17 +634,33 @@
             // 
             // ShadoFogToggleCheck
             // 
-            this.ShadoFogToggleCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShadoFogToggleCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ShadoFogToggleCheck.AutoSize = true;
             this.ShadoFogToggleCheck.Checked = true;
             this.ShadoFogToggleCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(109, 455);
+            this.ShadoFogToggleCheck.Location = new System.Drawing.Point(70, 413);
             this.ShadoFogToggleCheck.Name = "ShadoFogToggleCheck";
             this.ShadoFogToggleCheck.Size = new System.Drawing.Size(115, 22);
             this.ShadoFogToggleCheck.TabIndex = 3;
             this.ShadoFogToggleCheck.Text = "Easy mode";
             this.ShadoFogToggleCheck.UseVisualStyleBackColor = true;
             this.ShadoFogToggleCheck.CheckedChanged += new System.EventHandler(this.ShadoFogToggleCheck_CheckedChanged);
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel7.AutoSize = true;
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.ShadowFogPanel, 1, 0);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(-690, 10);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(983, 448);
+            this.tableLayoutPanel7.TabIndex = 9;
             // 
             // ConfigForm
             // 
@@ -648,11 +669,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.MyCancelButton;
-            this.ClientSize = new System.Drawing.Size(306, 499);
-            this.Controls.Add(this.ShadowFogPanel);
-            this.Controls.Add(this.tableLayoutPanel2);
+            this.ClientSize = new System.Drawing.Size(306, 474);
+            this.Controls.Add(this.tableLayoutPanel7);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.ShadoFogToggleCheck);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -678,10 +697,13 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.ShadowFogPanel.ResumeLayout(false);
+            this.ShadowFogPanel.PerformLayout();
             this.ShadowFogGroupBox.ResumeLayout(false);
             this.ShadowFogGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ShadowFogPasswordPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShadowFogUserPicture)).EndInit();
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -730,6 +752,7 @@
         private System.Windows.Forms.TextBox ShadowFogUserName;
         private System.Windows.Forms.CheckBox ShadowFogRememberUserCheck;
         private System.Windows.Forms.CheckBox ShadoFogToggleCheck;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
     }
 }
 

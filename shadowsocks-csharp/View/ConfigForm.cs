@@ -465,8 +465,8 @@ namespace Shadowsocks.View
                 controller.isShadowFogMode = true;
                 Text = I18N.GetString("Sign In");
                 tableLayoutPanel2.Enabled = false;
-                ShadowFogPanel.Enabled = true;
-                this.Width = ShadowFogModeFormWidth;// (328,555) as defualt when DPI = 144;
+                ShadowFogGroupBox.Enabled = true;
+                this.Width = ShadowFogModeFormWidth;// (328,530) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
             }
             else
@@ -474,7 +474,7 @@ namespace Shadowsocks.View
                 controller.isShadowFogMode = false;
                 Text = I18N.GetString("Edit Servers");
                 tableLayoutPanel2.Enabled = true;
-                ShadowFogPanel.Enabled = false;
+                ShadowFogGroupBox.Enabled = false;
                 this.Width = (int)(3.3 * ShadowFogModeFormWidth); // (1020,505) as defualt when DPI = 144;
                 this.Location = initialRightBottomCorner - this.Size;
                 // this is the only way to enter the shadowsocks panel;
