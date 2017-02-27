@@ -580,7 +580,6 @@
             this.ShadowFogPassword.Size = new System.Drawing.Size(200, 28);
             this.ShadowFogPassword.TabIndex = 6;
             this.ShadowFogPassword.UseSystemPasswordChar = true;
-            this.ShadowFogPassword.Click += new System.EventHandler(this.ShadowFogPassword_Click);
             this.ShadowFogPassword.TextChanged += new System.EventHandler(this.ShadowFogPassword_TextChanged);
             // 
             // ShadowFogUserName

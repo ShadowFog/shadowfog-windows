@@ -23,7 +23,6 @@ namespace Shadowsocks.View
         private int ShadowFogModeFormWidth;
 
         private bool isHashedPassword;
-        private bool isPasswordTextboxClicked;
 
         private const int EM_SETCUEBANNER = 0x1501;
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -83,7 +82,6 @@ namespace Shadowsocks.View
             //this.Text = I18N.GetString("Edit Servers");
             this.Text = I18N.GetString("Sign In");
 
-            isPasswordTextboxClicked = false;
             // when loading the initial UI, should judge whether to load the user information from local file
             ShadowFogRememberUserCheck.Checked = controller.GetClientUserIsRemember();
             if (ShadowFogRememberUserCheck.Checked)
@@ -97,7 +95,6 @@ namespace Shadowsocks.View
                 SendMessage(ShadowFogPassword.Handle, EM_SETCUEBANNER, 0, " Password...");
             }
             // must be put after the textbox value changed, in case the textchanged event triggerd to force this flag being false;
-            // problem here: checked is to remember password, only when auto load password case, no modification to textbox, the password is auto hashed;
             isHashedPassword = ShadowFogRememberUserCheck.Checked;
             //Ends
             /***********************************<End> add by Ian.May,Oct.16*************************************/
@@ -446,14 +443,13 @@ namespace Shadowsocks.View
             {
                 controller.Start();
                 controller.isShadowFogStarted = true; // next time will display "restart shadowfog"
-                this.Close();
             }
             catch (Exception Error)
             {
-                ShadowFogReload.Text = "Start";
-                this.Text = I18N.GetString("Sign In");
                 controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
+            // put here is trying to let everything done including response from network. after closing, any modification to configform wil be illegal
+            this.Close();
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
@@ -483,18 +479,11 @@ namespace Shadowsocks.View
             }
         }
 
-        // only when 1: the password textbox is clicked; 
-        // 2: the password textbox value is changed, 
+        // only when the password textbox value is changed, 
         // we believe this behaviour is to enter new password;
-        private void ShadowFogPassword_Click(object sender, EventArgs e)
-        {
-            isPasswordTextboxClicked = true;
-        }
-
         private void ShadowFogPassword_TextChanged(object sender, EventArgs e)
         {
-            if (isPasswordTextboxClicked)
-            { isHashedPassword = false; }
+            isHashedPassword = false; 
         }
 
         private void ConfigForm_Activated(object sender, EventArgs e)
