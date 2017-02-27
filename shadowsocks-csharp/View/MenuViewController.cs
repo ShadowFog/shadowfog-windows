@@ -178,38 +178,14 @@ namespace Shadowsocks.View
             }
             else
             {
-                /************************************<Start> Edit by Ian.May, Oct.18*****************************************/
-                //used for patially display channel infomation
-                //serverInfo = config.GetCurrentServer().FriendlyName();
-                serverInfo = config.GetCurrentServer().FriendlyName(controller.isShadowFogMode);
+                serverInfo = config.GetCurrentServer().FriendlyName();
             }
             // show more info by hacking the P/Invoke declaration for NOTIFYICONDATA inside Windows Forms
-            //string text = I18N.GetString("Shadowsocks") + " " + UpdateChecker.Version + "\n" +
-            //              (enabled ?
-            //                  I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
-            //                  String.Format(I18N.GetString("Running: Port {0}"), config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
-            //              + "\n" + serverInfo;
-            string text;
-            if (!controller.isShadowFogMode)
-            {
-                // we want to show more details but notify icon title is limited to 63 characters
-                text = I18N.GetString("Shadowsocks") + " " + UpdateChecker.Version + "\n" +
-                              (enabled ?
-                                  I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
-                                  String.Format(I18N.GetString("Running: Port {0}"), config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
-                              + "\n" + serverInfo;
-            }
-            else
-            {
-                // this trayIcon update only execute when controller.config is changed, so it's not associated with the fogmodetoggle checkbox, but tha's ok;
-                text = I18N.GetString("ShadowFog") + " " + UpdateChecker.ShadowFogVersion + "\n" +
-                              (enabled ?
-                                  I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
-                                  String.Format(I18N.GetString("Running: Port {0}"), config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
-                              + "\n" + serverInfo;
-            }
-            //Ends
-            /**************************************<End> Edit by Ian.May, Oct.18*****************************************/
+            string text = I18N.GetString("Shadowsocks") + " " + UpdateChecker.Version + "\n" +
+                          (enabled ?
+                              I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
+                              String.Format(I18N.GetString("Running: Port {0}"), config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
+                          + "\n" + serverInfo;
             ViewUtils.SetNotifyIconText(_notifyIcon, text);
         }
 
@@ -390,18 +366,11 @@ namespace Shadowsocks.View
         {
             if (updateChecker.NewVersionFound)
             {
-                /************************************<Start> Edit by Ian.May, Oct.18*****************************************/
-                // modify update reminding window
-                //ShowBalloonTip(String.Format(I18N.GetString("Shadowsocks {0} Update Found"), updateChecker.LatestVersionNumber + updateChecker.LatestVersionSuffix), I18N.GetString("Click here to update"), ToolTipIcon.Info, 5000);
-                Console.Write("new version download complete!");
-                ShowBalloonTip(String.Format(I18N.GetString("ShadowFog {0} Update Found"), updateChecker.LatestVersionNumber), I18N.GetString("Click here to update"), ToolTipIcon.Info, 5000);
+                ShowBalloonTip(String.Format(I18N.GetString("Shadowsocks {0} Update Found"), updateChecker.LatestVersionNumber + updateChecker.LatestVersionSuffix), I18N.GetString("Click here to update"), ToolTipIcon.Info, 5000);
             }
             else if (!_isStartupChecking)
             {
-                //ShowBalloonTip(I18N.GetString("Shadowsocks"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
-                ShowBalloonTip(I18N.GetString("ShadowFog"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
-                // ends
-                /************************************<Ends> Edit by Ian.May, Oct.18*****************************************/
+                ShowBalloonTip(I18N.GetString("Shadowsocks"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
             }
             _isStartupChecking = false;
         }
@@ -469,10 +438,7 @@ namespace Shadowsocks.View
             Configuration configuration = controller.GetConfigurationCopy();
             foreach (var server in configuration.configs)
             {
-                /*************************************<Start> Edit by Ian.May, Oct.18****************************************/
-                //MenuItem item = new MenuItem(server.FriendlyName());
-                MenuItem item = new MenuItem(server.FriendlyName(controller.isShadowFogMode));
-                /*************************************<Ends> Edit by Ian.May, Oct.18*****************************************/
+                MenuItem item = new MenuItem(server.FriendlyName());
                 item.Tag = i - strategyCount;
                 item.Click += AServerItem_Click;
                 items.Add(i, item);
@@ -604,20 +570,15 @@ namespace Shadowsocks.View
 
         private void ShowFirstTimeBalloon()
         {
-            //_notifyIcon.BalloonTipTitle = I18N.GetString("Shadowsocks is here");
-            //_notifyIcon.BalloonTipText = I18N.GetString("You can turn on/off Shadowsocks in the context menu");
-            _notifyIcon.BalloonTipTitle = I18N.GetString("ShadowFog is here");
-            _notifyIcon.BalloonTipText = I18N.GetString("You can turn on/off ShadowFog in the context menu");
+            _notifyIcon.BalloonTipTitle = I18N.GetString("Shadowsocks is here");
+            _notifyIcon.BalloonTipText = I18N.GetString("You can turn on/off Shadowsocks in the context menu");
             _notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
             _notifyIcon.ShowBalloonTip(0);
         }
 
         private void AboutItem_Click(object sender, EventArgs e)
         {
-            /*************************************<Start> Edit by Ian.May, Oct.18****************************************/
-            //Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
-            Process.Start("https://github.com/ShadowFog/shadowfog-windows");
-            /*************************************<Ends> Edit by Ian.May, Oct.18*****************************************/
+            Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
         }
 
         private void notifyIcon1_Click(object sender, MouseEventArgs e)

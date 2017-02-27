@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 
-/***********************************/
-using System.Windows.Forms;
-using System.IO.Compression;
-/***********************************/
-
 using Newtonsoft.Json.Linq;
 
 using Shadowsocks.Model;
@@ -15,17 +10,10 @@ using Shadowsocks.Util;
 
 namespace Shadowsocks.Controller
 {
-    /*************************************************  This UpdateChecker is for shadowfog  ******************************************************/
-    /**********************************  The update checker for shadowsocks is rewritten for lastest release  *************************************/
-    /************************************************************ Oct. 20th ***********************************************************************/
-
     public class UpdateChecker
     {
-        //Use "releases/latest" instead of "releases";
-        //private const string UpdateURL = "https://api.github.com/repos/shadowsocks/shadowsocks-windows/releases";
-        //private const string UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.3319.102 Safari/537.36";
-        private const string UpdateURLShadowFog = "https://api.github.com/repos/ShadowFog/shadowfog-windows/releases/latest";
-        private const string UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36";
+        private const string UpdateURL = "https://api.github.com/repos/shadowsocks/shadowsocks-windows/releases";
+        private const string UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.3319.102 Safari/537.36";
 
         private Configuration config;
         public bool NewVersionFound;
@@ -37,8 +25,6 @@ namespace Shadowsocks.Controller
         public event EventHandler CheckUpdateCompleted;
 
         public const string Version = "3.4.3";
-        public const string ShadowFogVersion = "0.5.0";
-        public const string ShadowFogSubVersion = ".3";
 
         private class CheckUpdateTimer : System.Timers.Timer
         {
@@ -77,8 +63,7 @@ namespace Shadowsocks.Controller
                 Logging.Debug("Checking updates...");
                 WebClient http = CreateWebClient();
                 http.DownloadStringCompleted += http_DownloadStringCompleted;
-                //http.DownloadStringAsync(new Uri(UpdateURL));
-                http.DownloadStringAsync(new Uri(UpdateURLShadowFog));
+                http.DownloadStringAsync(new Uri(UpdateURL));
             }
             catch (Exception ex)
             {
@@ -86,91 +71,47 @@ namespace Shadowsocks.Controller
             }
         }
 
-        // modified from array processing to single Json obj;
-        //private void http_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        string response = e.Result;
-
-        //        JArray result = JArray.Parse(response);
-
-        //        List<Asset> asserts = new List<Asset>();
-        //        if (result != null)
-        //        {
-        //            foreach (JObject release in result)
-        //            {
-        //                var isPreRelease = (bool) release["prerelease"];
-        //                if (isPreRelease && !config.checkPreRelease)
-        //                {
-        //                    continue;
-        //                }
-        //                foreach (JObject asset in (JArray)release["assets"])
-        //                {
-        //                    Asset ass = Asset.ParseAsset(asset);
-        //                    if (ass != null)
-        //                    {
-        //                        ass.prerelease = isPreRelease;
-        //                        if (ass.IsNewVersion(Version, config.checkPreRelease))
-        //                        {
-        //                            asserts.Add(ass);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if (asserts.Count != 0)
-        //        {
-        //            SortByVersions(asserts);
-        //            Asset asset = asserts[asserts.Count - 1];
-        //            NewVersionFound = true;
-        //            LatestVersionURL = asset.browser_download_url;
-        //            LatestVersionNumber = asset.version;
-        //            LatestVersionName = asset.name;
-        //            LatestVersionSuffix = asset.suffix == null ? "" : $"-{asset.suffix}";
-
-        //            startDownload();
-        //        }
-        //        else
-        //        {
-        //            Logging.Debug("No update is available");
-        //            if (CheckUpdateCompleted != null)
-        //            {
-        //                CheckUpdateCompleted(this, new EventArgs());
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logging.LogUsefulException(ex);
-        //    }
-        //}
         private void http_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             try
             {
                 string response = e.Result;
 
-                JObject release = JObject.Parse(response);
-                Asset asset = new Asset();
+                JArray result = JArray.Parse(response);
 
-                if (release != null)
+                List<Asset> asserts = new List<Asset>();
+                if (result != null)
                 {
-                    if ((bool)release["prerelease"])
+                    foreach (JObject release in result)
                     {
-                        return;
-                    }
-                    foreach (JObject assetObj in (JArray)release["assets"]) //release["assets"] is a JSON array with only one object...
-                    {
-                        asset.Parse(assetObj);
+                        var isPreRelease = (bool) release["prerelease"];
+                        if (isPreRelease && !config.checkPreRelease)
+                        {
+                            continue;
+                        }
+                        foreach (JObject asset in (JArray)release["assets"])
+                        {
+                            Asset ass = Asset.ParseAsset(asset);
+                            if (ass != null)
+                            {
+                                ass.prerelease = isPreRelease;
+                                if (ass.IsNewVersion(Version, config.checkPreRelease))
+                                {
+                                    asserts.Add(ass);
+                                }
+                            }
+                        }
                     }
                 }
-                if (asset.IsNewVersion(ShadowFogVersion))
+                if (asserts.Count != 0)
                 {
+                    SortByVersions(asserts);
+                    Asset asset = asserts[asserts.Count - 1];
                     NewVersionFound = true;
                     LatestVersionURL = asset.browser_download_url;
                     LatestVersionNumber = asset.version;
                     LatestVersionName = asset.name;
+                    LatestVersionSuffix = asset.suffix == null ? "" : $"-{asset.suffix}";
 
                     startDownload();
                 }
@@ -204,9 +145,6 @@ namespace Shadowsocks.Controller
             }
         }
 
-        /**************************************************************************************************************/
-        // this callback function add auto program replacing procedure
-        /**************************************************************************************************************/
         private void Http_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             try
@@ -221,15 +159,6 @@ namespace Shadowsocks.Controller
                 {
                     CheckUpdateCompleted(this, new EventArgs());
                 }
-
-                /**************************************************************************************************************/
-                // dirty auto updater put here...
-                string ShadowFogFullPath = Application.StartupPath + @"\ShadowFog.exe";
-                string ShadowFogOld = Application.StartupPath + @"\ShadowFog.exe.old";
-                System.IO.File.Move(ShadowFogFullPath, ShadowFogOld);
-                ZipFile.ExtractToDirectory(LatestVersionLocalName, Application.StartupPath);
-                /**************************************************************************************************************/
-
             }
             catch (Exception ex)
             {
@@ -241,15 +170,14 @@ namespace Shadowsocks.Controller
         {
             WebClient http = new WebClient();
             http.Headers.Add("User-Agent", UserAgent);
-            // The line below is not sure to enable: whether use proxy to update
             http.Proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
             return http;
         }
 
-        //private void SortByVersions(List<Asset> asserts)
-        //{
-        //    asserts.Sort();
-        //}
+        private void SortByVersions(List<Asset> asserts)
+        {
+            asserts.Sort();
+        }
 
         public class Asset : IComparable<Asset>
         {
@@ -299,46 +227,6 @@ namespace Shadowsocks.Controller
                 var cmp = CompareVersion(version, currentVersion);
                 return cmp > 0;
             }
-
-            /**************************************************************************************************************/
-            // Begins: some useful methods
-            /**************************************************************************************************************/
-            public bool IsNewVersion(string currentVersion)
-            {
-                if (prerelease)
-                {
-                    return false;
-                }
-                if (version == null)
-                {
-                    return false;
-                }
-                return CompareVersion(version, currentVersion) > 0;
-            }
-
-            public void Parse(JObject asset)
-            {
-                name = (string)asset["name"];
-                browser_download_url = (string)asset["browser_download_url"];
-                version = ParseVersionFromURL(browser_download_url);
-                prerelease = browser_download_url.IndexOf("prerelease", StringComparison.Ordinal) >= 0;
-            }
-
-            private static string ParseVersionFromURL(string url)
-            {
-                Match match = Regex.Match(url, @".*Shadowfog-win.*?-([\d\.]+)\.\w+", RegexOptions.IgnoreCase);
-                if (match.Success)
-                {
-                    if (match.Groups.Count == 2)
-                    {
-                        return match.Groups[1].Value;
-                    }
-                }
-                return null;
-            }
-            /**************************************************************************************************************/
-            // Ends: some useful methods
-            /**************************************************************************************************************/
 
             public static int CompareVersion(string l, string r)
             {
