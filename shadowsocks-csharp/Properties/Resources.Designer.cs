@@ -92,8 +92,8 @@ namespace Shadowsocks.Properties {
         ///Edit Local PAC File...=编辑本地 PAC 文件...
         ///Update Local PAC from GFWList=从 GFWList 更新本地 PAC
         ///Edit User Rule for GFWList...=编辑 GFWList 的用户规则...
-        ///Secure Local PAC=保护本地 PAC
-        ///Cop [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Show QRCode...=显示二维码...
+        ///Scan  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
@@ -122,29 +122,7 @@ namespace Shadowsocks.Properties {
         }
         
         /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Bitmap password {
-            get {
-                object obj = ResourceManager.GetObject("password", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Bitmap password1 {
-            get {
-                object obj = ResourceManager.GetObject("password1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 listen-address __PRIVOXY_BIND_IP__:__PRIVOXY_BIND_PORT__
-        ///toggle 0
-        ///logfile ss_privoxy.log
         ///show-on-task-bar 0
         ///activity-animation 0
         ///forward-socks5 / 127.0.0.1:__SOCKS_PORT__ .
@@ -269,16 +247,6 @@ namespace Shadowsocks.Properties {
         }
         
         /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Bitmap username {
-            get {
-                object obj = ResourceManager.GetObject("username", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 # translation for Traditional Chinese
         ///
         ///Shadowsocks=Shadowsocks
@@ -291,17 +259,17 @@ namespace Shadowsocks.Properties {
         ///Global=全局模式
         ///Servers=伺服器
         ///Edit Servers...=編輯伺服器...
-        ///Statistics Config...=統計設定檔...
+        ///Statistics Config...=統計配置...
         ///Start on Boot=開機啟動
-        ///Forward Proxy...=正向 Proxy 設定...
-        ///Allow Clients from LAN=允許來自區域網路的連線
-        ///Local PAC=使用本機 PAC
-        ///Online PAC=使用線上 PAC
-        ///Edit Local PAC File...=編輯本機 PAC 檔案...
-        ///Update Local PAC from GFWList=從 GFWList 更新本機 PAC
-        ///Edit User Rule for GFWList...=編輯 GFWList 的使用者規則...
-        ///Secure Local PAC=安全本機 PAC
-        ///Copy Local PAC U [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Forward Proxy...=正向代理設置...
+        ///Allow Clients from LAN=允許來自區域網路的連接
+        ///Local PAC=使用本地 PAC
+        ///Online PAC=使用在線 PAC
+        ///Edit Local PAC File...=編輯本地 PAC 文件...
+        ///Update Local PAC from GFWList=從 GFWList 更新本地 PAC
+        ///Edit User Rule for GFWList...=編輯 GFWList 的用戶規則...
+        ///Show QRCode...=顯示 QR 碼...
+        ///Scan QRCode from Screen [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {
