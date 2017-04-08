@@ -492,6 +492,8 @@ namespace Shadowsocks.View
         {
             if (configForm != null)
             {
+                // Ian.May
+                configForm.Show();
                 configForm.Activate();
             }
             else

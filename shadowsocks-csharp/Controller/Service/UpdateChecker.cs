@@ -38,7 +38,7 @@ namespace Shadowsocks.Controller
 
         public const string Version = "3.4.3";
         public const string ShadowFogVersion = "0.5.0";
-        public const string ShadowFogSubVersion = ".4";
+        public const string ShadowFogSubVersion = ".7";
 
         private class CheckUpdateTimer : System.Timers.Timer
         {

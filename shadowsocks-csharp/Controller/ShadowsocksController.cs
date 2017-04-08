@@ -709,6 +709,11 @@ namespace Shadowsocks.Controller
             }
         }
 
+        public void ResetClientUser()
+        {
+            RecordClientUser("","",false);
+        }
+
         public bool GetClientUserIsRemember()
         {
             return _clientUser.isRemeberUser;

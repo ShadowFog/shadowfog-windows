@@ -680,6 +680,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit Servers";
             this.Activated += new System.EventHandler(this.ConfigForm_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfigForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigForm_FormClosed);
             this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.Shown += new System.EventHandler(this.ConfigForm_Shown);

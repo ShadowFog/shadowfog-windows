@@ -360,6 +360,11 @@ namespace Shadowsocks.View
 
         private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //controller.ConfigChanged -= controller_ConfigChanged;
+        }
+
+        private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
             controller.ConfigChanged -= controller_ConfigChanged;
         }
 
@@ -434,11 +439,19 @@ namespace Shadowsocks.View
         private void ShadowFogReload_Click(object sender, EventArgs e)
         {
             ShadowFogReload.Text = "Connecting...";
-            // RecordClientUser() pass the username&passworf form textbox to ShadofogConfiguration object and save it to file accordingly
-            if (isHashedPassword)
-            { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ShadowFogPassword.Text, ShadowFogRememberUserCheck.Checked); }
-            else
-            { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
+            try
+            {
+                // RecordClientUser() pass the username&passworf form textbox to ShadofogConfiguration object and save it to file accordingly
+                if (isHashedPassword)
+                { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ShadowFogPassword.Text, ShadowFogRememberUserCheck.Checked); }
+                else
+                { controller.RecordClientUser(ShadowFogUserName.Text.Trim(), ClientUser.SHA256(ShadowFogPassword.Text), ShadowFogRememberUserCheck.Checked); }
+            }
+            catch (Exception Error)
+            {
+                controller.ResetClientUser();
+            }
+
             try
             {
                 controller.Start();
@@ -448,8 +461,12 @@ namespace Shadowsocks.View
             {
                 controller.RecoverSSConfig();// erase _config obtianed from scheduler
             }
+
             // put here is trying to let everything done including response from network. after closing, any modification to configform wil be illegal
-            this.Close();
+            //this.Close();
+            this.Hide();
+            ShadowFogReload.Text = "Restart";
+
         }
 
         private void ShadoFogToggleCheck_CheckedChanged(object sender, EventArgs e)
@@ -501,6 +518,8 @@ namespace Shadowsocks.View
         {
             System.Diagnostics.Process.Start("http://shadowfog.com/oss/siteIndex");
         }
+
+
         //Ends
         /*************************************************<end>add by Ian.May Oct.16**********************************************************/
 

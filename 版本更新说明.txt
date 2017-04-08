@@ -18,3 +18,5 @@ reload()中有一段触发configChanged 事件代码：
 0.5.0.2: 调整shadowsocks尺寸，groupbox的autosize设置为false
 0.5.0.3：assembly info中子版本号加入更新
 0.5.0.4: 修复了登录时用tab键切换到密码框修改密码后，系统不做hash就提交的bug;修改了点击reload后的configform.close的流程，减少出现UI异常的可能。
+0.5.0.6: 增加了recordclientuser()的try catch处理，用来测试避免出现user-info.json文件被异常写入null的情况
+0.5.0.7: 修改shadowfog登录后从不关闭窗口，改为hide方法，双击右下飞机图标后直接显示隐藏的窗口。
